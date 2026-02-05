@@ -742,271 +742,6 @@ def load_custom_css():
         text-transform: uppercase !important;
         margin-top: 10px !important;
     }}
-    
-    /* ====== RESPONSIVIDADE - MOBILE E TABLET ====== */
-    
-    /* TABLETS (até 1024px) */
-    @media screen and (max-width: 1024px) {{
-        .block-container {{
-            padding-left: 1rem !important;
-            padding-right: 1rem !important;
-        }}
-        
-        .main-header {{
-            padding: 15px 20px;
-            flex-direction: column;
-            gap: 15px;
-        }}
-        
-        .header-left {{
-            min-width: auto;
-            padding-left: 0;
-            order: 3;
-        }}
-        
-        .header-center {{
-            padding-right: 0;
-            order: 1;
-        }}
-        
-        .mini-disponibilidade {{
-            order: 2;
-            min-width: 150px;
-        }}
-        
-        .sirene-container {{
-            display: none;
-        }}
-        
-        .kpi-card {{
-            padding: 20px 10px;
-        }}
-        
-        .kpi-card .kpi-value {{
-            font-size: 2.5rem;
-        }}
-    }}
-    
-    /* MOBILE (até 768px) */
-    @media screen and (max-width: 768px) {{
-        .block-container {{
-            padding-top: 1rem !important;
-            padding-left: 0.5rem !important;
-            padding-right: 0.5rem !important;
-        }}
-        
-        /* Header Mobile */
-        .main-header {{
-            padding: 15px;
-            flex-direction: column;
-            text-align: center;
-        }}
-        
-        .main-header h1 {{
-            font-size: 1.5rem;
-        }}
-        
-        .main-header p {{
-            font-size: 0.75rem;
-        }}
-        
-        .header-logo {{
-            max-height: 80px;
-            max-width: 90%;
-        }}
-        
-        .header-left {{
-            width: 100%;
-            justify-content: center;
-            padding-left: 0;
-        }}
-        
-        .header-center {{
-            width: 100%;
-            padding-right: 0;
-        }}
-        
-        .mini-disponibilidade {{
-            width: 100%;
-            min-width: auto;
-            padding: 15px 20px;
-        }}
-        
-        .mini-disponibilidade .mini-valor {{
-            font-size: 2.5rem;
-        }}
-        
-        /* KPIs Mobile - Empilhados */
-        .kpi-card {{
-            padding: 20px 15px;
-            margin-bottom: 10px;
-        }}
-        
-        .kpi-card .kpi-label {{
-            font-size: 0.75rem;
-        }}
-        
-        .kpi-card .kpi-value {{
-            font-size: 2.2rem;
-        }}
-        
-        /* Painéis Mobile */
-        div[data-testid="stVerticalBlock"] > div[data-testid="stVerticalBlockBorderWrapper"] {{
-            padding: 15px !important;
-        }}
-        
-        .card-title {{
-            font-size: 0.85rem;
-            margin-bottom: 15px;
-        }}
-        
-        /* Tabela Mobile */
-        .dataframe {{
-            font-size: 0.75rem !important;
-        }}
-        
-        .dataframe thead tr th {{
-            font-size: 0.65rem !important;
-            padding: 8px 4px !important;
-        }}
-        
-        .dataframe tbody tr td {{
-            padding: 8px 4px !important;
-        }}
-        
-        /* Sidebar Mobile */
-        section[data-testid="stSidebar"] {{
-            width: 100% !important;
-        }}
-        
-        section[data-testid="stSidebar"] > div {{
-            width: 100% !important;
-        }}
-        
-        /* Warning Box Mobile */
-        .centered-warning {{
-            min-height: 50vh;
-            padding: 20px;
-        }}
-        
-        .warning-box {{
-            padding: 30px 20px;
-        }}
-        
-        .warning-icon {{
-            font-size: 3rem;
-        }}
-        
-        .warning-text {{
-            font-size: 1rem;
-        }}
-    }}
-    
-    /* MOBILE PEQUENO (até 480px) */
-    @media screen and (max-width: 480px) {{
-        .main-header {{
-            padding: 10px;
-        }}
-        
-        .main-header h1 {{
-            font-size: 1.2rem;
-            margin-bottom: 5px;
-        }}
-        
-        .main-header p {{
-            font-size: 0.7rem;
-        }}
-        
-        .header-logo {{
-            max-height: 60px;
-        }}
-        
-        .mini-disponibilidade {{
-            padding: 12px 15px;
-        }}
-        
-        .mini-disponibilidade .mini-label {{
-            font-size: 0.6rem;
-        }}
-        
-        .mini-disponibilidade .mini-valor {{
-            font-size: 2rem;
-        }}
-        
-        .kpi-card {{
-            padding: 15px 10px;
-        }}
-        
-        .kpi-card .kpi-label {{
-            font-size: 0.7rem;
-            letter-spacing: 0.5px;
-        }}
-        
-        .kpi-card .kpi-value {{
-            font-size: 2rem;
-        }}
-        
-        .card-title {{
-            font-size: 0.8rem;
-        }}
-        
-        div[data-testid="stVerticalBlock"] > div[data-testid="stVerticalBlockBorderWrapper"] {{
-            padding: 12px !important;
-        }}
-        
-        .dataframe {{
-            font-size: 0.7rem !important;
-        }}
-        
-        .dataframe thead tr th {{
-            font-size: 0.6rem !important;
-            padding: 6px 3px !important;
-        }}
-        
-        .dataframe tbody tr td {{
-            padding: 6px 3px !important;
-        }}
-        
-        .warning-box {{
-            padding: 20px 15px;
-        }}
-        
-        .warning-icon {{
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-        }}
-        
-        .warning-text {{
-            font-size: 0.9rem;
-        }}
-    }}
-    
-    /* LANDSCAPE MOBILE (altura menor que 500px) */
-    @media screen and (max-height: 500px) and (orientation: landscape) {{
-        .main-header {{
-            padding: 10px;
-        }}
-        
-        .header-logo {{
-            max-height: 50px;
-        }}
-        
-        .mini-disponibilidade {{
-            padding: 8px 15px;
-        }}
-        
-        .mini-disponibilidade .mini-valor {{
-            font-size: 1.8rem;
-        }}
-        
-        .kpi-card .kpi-value {{
-            font-size: 1.8rem;
-        }}
-        
-        .centered-warning {{
-            min-height: 40vh;
-        }}
-    }}
     </style>
     """, unsafe_allow_html=True)
 
@@ -1063,15 +798,9 @@ def load_data_from_file(file_source):
     try:
         # Lê Excel
         df = pd.read_excel(file_source, sheet_name="Frota Agro ")
-        
-        if df.empty:
-            st.error("❌ A planilha está vazia!")
-            return pd.DataFrame()
-        
         # Primeira linha como header
         df.columns = df.iloc[0]
         df = df[1:].reset_index(drop=True)
-        
         # Renomeia duplicadas
         df = renomear_colunas_duplicadas(df)
         
@@ -1092,17 +821,9 @@ def load_data_from_file(file_source):
         # Remove linhas sem status
         df = df[df["STATUS"].notna()]
         df = df[df["STATUS"] != ""]
-        
-        if df.empty:
-            st.error("❌ Nenhum dado válido encontrado após o processamento!")
-            return pd.DataFrame()
-        
         return df
-        
     except Exception as e:
         st.error(f"❌ Erro ao carregar dados: {str(e)}")
-        import traceback
-        st.error(f"Detalhes: {traceback.format_exc()}")
         return pd.DataFrame()
 
 def aplicar_cor_status(row):
@@ -1457,42 +1178,7 @@ def main():
     
     # Se não houver dados, para execução
     if df_base_filtrado.empty:
-        st.markdown("""
-        <style>
-        .centered-warning {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 60vh;
-            text-align: center;
-        }
-        .warning-box {
-            background-color: #1e1e1e;
-            border: 2px solid #ff9800;
-            border-radius: 15px;
-            padding: 40px 60px;
-            box-shadow: 0 0 20px rgba(255, 152, 0, 0.3);
-        }
-        .warning-icon {
-            font-size: 4rem;
-            margin-bottom: 20px;
-        }
-        .warning-text {
-            font-size: 1.3rem;
-            color: #ffffff;
-            font-weight: 600;
-            line-height: 1.6;
-        }
-        </style>
-        <div class="centered-warning">
-            <div class="warning-box">
-                <div class="warning-icon">⚠️</div>
-                <div class="warning-text">
-                    Por favor, carregue um arquivo Excel<br>na barra lateral para visualizar os dados.
-                </div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.warning("⚠️ Por favor, carregue um arquivo Excel na barra lateral para visualizar os dados.")
         st.stop()
     
     # Aplica filtros selecionados
