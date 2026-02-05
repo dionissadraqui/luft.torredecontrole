@@ -5,6 +5,7 @@ from datetime import datetime
 import numpy as np
 import streamlit as st
 import base64
+import io
 
 #  >    executar  >   python -m streamlit run torre_controle.py  
 
@@ -82,9 +83,9 @@ CORES_DISPONIBILIDADE = {
     "background_start": "#000000",
     "background_end": "#000000",
     "border": "#2e5a2e",
-    "label": "#000000fa",
-    "valor": "#000000",
-    "subtitle": "#000000"
+    "label": "#ffffff",
+    "valor": "#4caf50",
+    "subtitle": "#cccccc"
 }
 
 # Cores Gerais da Interface - Elementos comuns
@@ -198,7 +199,7 @@ def show_loading_screen(placeholder):
         }
         .loading-text {
             color: #ffffff;
-            font-size: 32px;
+            font-size: 24px;
             font-weight: 700;
             text-align: center;
             animation: blink 1.5s ease-in-out infinite;
@@ -216,7 +217,7 @@ def show_loading_screen(placeholder):
     placeholder.markdown(loading_html, unsafe_allow_html=True)
 
 # =====================================================
-# CSS CUSTOMIZADO
+# CSS CUSTOMIZADO COM RESPONSIVIDADE MOBILE
 # Estilos personalizados para toda a interface
 # =====================================================
 def load_custom_css():
@@ -229,7 +230,6 @@ def load_custom_css():
     }}
     
     /* ====== REMOVER HEADER PADRÃO STREAMLIT ====== */
-    /* Esconde header nativo do Streamlit */
     header[data-testid="stHeader"] {{
         background-color: rgba(0,0,0,0) !important;
         backdrop-filter: none !important;
@@ -248,7 +248,6 @@ def load_custom_css():
     }}
     
     /* ====== FUNDO GERAL ====== */
-    /* Gradiente de fundo da aplicação */
     .stApp {{
         background: linear-gradient(135deg, {CORES_INTERFACE["fundo_gradiente_start"]} 0%, {CORES_INTERFACE["fundo_gradiente_end"]} 100%) !important;
     }}
@@ -260,8 +259,58 @@ def load_custom_css():
         padding-right: 2rem !important;
     }}
     
+    /* ====== RESPONSIVIDADE MOBILE ====== */
+    @media (max-width: 768px) {{
+        .block-container {{
+            padding-left: 1rem !important;
+            padding-right: 1rem !important;
+            padding-top: 1rem !important;
+        }}
+        
+        .main-header {{
+            flex-direction: column !important;
+            padding: 15px !important;
+            gap: 15px !important;
+        }}
+        
+        .header-left {{
+            padding-left: 0 !important;
+            min-width: auto !important;
+            order: 2;
+        }}
+        
+        .header-center {{
+            padding-right: 0 !important;
+            order: 1;
+        }}
+        
+        .sirene-container {{
+            display: none !important;
+        }}
+        
+        .mini-disponibilidade {{
+            order: 3;
+            min-width: 100% !important;
+        }}
+        
+        .kpi-card {{
+            padding: 15px 10px !important;
+        }}
+        
+        .kpi-card .kpi-value {{
+            font-size: 2rem !important;
+        }}
+        
+        .kpi-card .kpi-label {{
+            font-size: 0.7rem !important;
+        }}
+        
+        .header-logo {{
+            max-height: 80px !important;
+        }}
+    }}
+    
     /* ====== PAINÉIS/CONTAINERS ====== */
-    /* Estilo dos cartões/painéis */
     div[data-testid="stVerticalBlock"] > div[data-testid="stVerticalBlockBorderWrapper"] {{
         background-color: {CORES_INTERFACE["painel_background"]} !important;
         border: 1px solid {CORES_INTERFACE["painel_border"]} !important;
@@ -271,7 +320,6 @@ def load_custom_css():
     }}
     
     /* ====== TÍTULOS DOS PAINÉIS ====== */
-    /* Cabeçalhos dos cartões */
     .card-title {{
         font-weight: 700;
         font-size: 0.95rem;
@@ -285,7 +333,6 @@ def load_custom_css():
     }}
     
     /* ====== KPI CARDS CUSTOM ====== */
-    /* Cartões de métricas principais */
     .kpi-card {{
         background-color: {CORES_INTERFACE["painel_background"]};
         border-radius: 10px;
@@ -308,7 +355,6 @@ def load_custom_css():
     }}
 
     /* AZUL - TOTAL */
-    /* KPI de total de veículos */
     .kpi-azul {{
         border: 2px solid {CORES_KPI["TOTAL"]["border"]};
         box-shadow: 0 0 15px {CORES_KPI["TOTAL"]["shadow"]}, 0 4px 15px rgba(0,0,0,0.3);
@@ -317,7 +363,6 @@ def load_custom_css():
     .kpi-azul .kpi-value {{ color: {CORES_KPI["TOTAL"]["text"]}; }}
 
     /* LARANJA - EM OPERAÇÃO */
-    /* KPI de veículos em operação */
     .kpi-laranja {{
         border: 2px solid {CORES_KPI["OPERACAO"]["border"]};
         box-shadow: 0 0 15px {CORES_KPI["OPERACAO"]["shadow"]}, 0 4px 15px rgba(0,0,0,0.3);
@@ -326,7 +371,6 @@ def load_custom_css():
     .kpi-laranja .kpi-value {{ color: {CORES_KPI["OPERACAO"]["text"]}; }}
 
     /* VERDE - DISPONÍVEIS */
-    /* KPI de veículos disponíveis */
     .kpi-verde {{
         border: 2px solid {CORES_KPI["DISPONIVEIS"]["border"]};
         box-shadow: 0 0 15px {CORES_KPI["DISPONIVEIS"]["shadow"]}, 0 4px 15px rgba(0,0,0,0.3);
@@ -335,7 +379,6 @@ def load_custom_css():
     .kpi-verde .kpi-value {{ color: {CORES_KPI["DISPONIVEIS"]["text"]}; }}
 
     /* VERMELHO - MANUTENÇÃO */
-    /* KPI de veículos em manutenção */
     .kpi-vermelho {{
         border: 2px solid {CORES_KPI["MANUTENCAO"]["border"]};
         box-shadow: 0 0 15px {CORES_KPI["MANUTENCAO"]["shadow"]}, 0 4px 15px rgba(0,0,0,0.3);
@@ -344,7 +387,6 @@ def load_custom_css():
     .kpi-vermelho .kpi-value {{ color: {CORES_KPI["MANUTENCAO"]["text"]}; }}
 
     /* ====== HEADER PRINCIPAL ====== */
-    /* Cabeçalho da página */
     .main-header {{
         background-color: {CORES_HEADER["background"]};
         padding: 25px 30px;
@@ -389,7 +431,6 @@ def load_custom_css():
     }}
 
     /* ====== LOGO NO HEADER ====== */
-    /* Estilo da logo centralizada */
     .header-logo {{
         max-height: 120px;
         max-width: 750px;
@@ -416,10 +457,9 @@ def load_custom_css():
     }}
 
     /* ====== MINI PAINEL DE DISPONIBILIDADE NO HEADER ====== */
-    /* Widget de taxa de disponibilidade */
     .mini-disponibilidade {{
         background: linear-gradient(135deg, {CORES_DISPONIBILIDADE["background_start"]} 0%, {CORES_DISPONIBILIDADE["background_end"]} 100%);
-        border: 1px solid {CORES_DISPONIBILIDADE["border"]};
+        border: 2px solid {CORES_DISPONIBILIDADE["border"]};
         border-radius: 10px;
         padding: 18px 28px;
         text-align: center;
@@ -452,14 +492,8 @@ def load_custom_css():
         letter-spacing: 0.8px;
         margin-top: 4px;
     }}
-
-    .mini-disponibilidade .mini-icon {{
-        font-size: 0.8rem;
-        margin-bottom: 2px;
-    }}
     
     /* ====== SIRENE GIROFLEX ANIMADA ====== */
-    /* Animação de sirene no header */
     .sirene-container {{
         position: relative;
         width: 60px;
@@ -467,7 +501,6 @@ def load_custom_css():
         flex-shrink: 0;
     }}
     
-    /* Base da sirene */
     .sirene-base {{
         position: absolute;
         bottom: 0;
@@ -479,7 +512,6 @@ def load_custom_css():
         border-radius: 0 0 8px 8px;
     }}
     
-    /* Luz da sirene */
     .sirene-light {{
         position: absolute;
         top: 5px;
@@ -493,7 +525,6 @@ def load_custom_css():
         animation: giroflex 1s infinite;
     }}
     
-    /* Brilho da luz */
     .sirene-light::before {{
         content: '';
         position: absolute;
@@ -505,7 +536,6 @@ def load_custom_css():
         border-radius: 50% 50% 20% 20%;
     }}
     
-    /* Feixe de luz */
     .sirene-beam {{
         position: absolute;
         top: 50%;
@@ -520,7 +550,6 @@ def load_custom_css():
         transform-origin: 50% 0%;
     }}
     
-    /* Animação pulsante da luz */
     @keyframes giroflex {{
         0%, 100% {{
             background: linear-gradient(180deg, {CORES_SIRENE["light_top"]} 0%, {CORES_SIRENE["light_bottom"]} 100%);
@@ -532,7 +561,6 @@ def load_custom_css():
         }}
     }}
     
-    /* Animação de rotação do feixe */
     @keyframes beam-rotate {{
         0% {{
             transform: translate(-50%, -50%) rotate(0deg);
@@ -547,7 +575,6 @@ def load_custom_css():
         }}
     }}
     
-    /* Indicador de status pulsante */
     .status-dot {{
         display: inline-block;
         width: 8px;
@@ -558,20 +585,17 @@ def load_custom_css():
         animation: pulse 2s infinite;
     }}
     
-    /* Animação de pulso */
     @keyframes pulse {{
         0%, 100% {{ opacity: 1; }}
         50% {{ opacity: 0.5; }}
     }}
     
     /* ====== TABELAS ====== */
-    /* Estilo das tabelas de dados */
     .dataframe {{
         font-size: 0.85rem !important;
         color: {CORES_INTERFACE["texto_principal"]} !important;
     }}
     
-    /* Cabeçalho da tabela */
     .dataframe thead tr th {{
         background-color: {CORES_INTERFACE["tabela_header_bg"]} !important;
         color: {CORES_INTERFACE["texto_secundario"]} !important;
@@ -582,26 +606,22 @@ def load_custom_css():
         border-bottom: 1px solid {CORES_INTERFACE["painel_border"]} !important;
     }}
     
-    /* Linhas da tabela */
     .dataframe tbody tr td {{
         background-color: {CORES_INTERFACE["tabela_row_bg"]} !important;
         color: {CORES_INTERFACE["texto_principal"]} !important;
         border-bottom: 1px solid {CORES_INTERFACE["painel_border"]} !important;
     }}
     
-    /* Hover nas linhas */
     .dataframe tbody tr:hover td {{
         background-color: {CORES_INTERFACE["tabela_row_hover"]} !important;
     }}
     
     /* ====== GRÁFICOS PLOTLY ====== */
-    /* Fundo transparente nos gráficos */
     .js-plotly-plot {{
         background-color: transparent !important;
     }}
     
     /* ====== SIDEBAR ====== */
-    /* Barra lateral de filtros */
     section[data-testid="stSidebar"] {{
         background-color: {CORES_INTERFACE["sidebar_background"]} !important;
         border-right: 1px solid {CORES_INTERFACE["sidebar_border"]} !important;
@@ -634,7 +654,6 @@ def load_custom_css():
     }}
     
     /* ====== UPLOAD DE ARQUIVO ====== */
-    /* Área de upload na sidebar */
     section[data-testid="stSidebar"] .stFileUploader label {{
         color: {CORES_INTERFACE["texto_principal"]} !important;
     }}
@@ -658,7 +677,6 @@ def load_custom_css():
     }}
     
     /* ====== BOTÕES ====== */
-    /* Estilo dos botões */
     .stButton button {{
         background-color: {CORES_INTERFACE["botao_primary"]} !important;
         color: white !important;
@@ -675,13 +693,11 @@ def load_custom_css():
     }}
     
     /* ====== MÉTRICAS ====== */
-    /* Esconde delta das métricas */
     div[data-testid="stMetricDelta"] {{
         display: none !important;
     }}
     
     /* ====== TEXTOS GERAIS ====== */
-    /* Cor padrão dos textos */
     .stMarkdown, .stMarkdown p, .stMarkdown span, .stMarkdown div {{
         color: {CORES_INTERFACE["texto_principal"]} !important;
     }}
@@ -707,7 +723,6 @@ def load_custom_css():
     }}
     
     /* ====== ALERTAS ====== */
-    /* Caixas de alerta */
     .alert-box {{
         background-color: {CORES_INTERFACE["sidebar_background"]};
         padding: 15px;
@@ -721,7 +736,6 @@ def load_custom_css():
     }}
     
     /* ====== DISPONIBILIDADE ====== */
-    /* Display de taxa de disponibilidade */
     .availability-display {{
         background-color: {CORES_INTERFACE["sidebar_background"]};
         padding: 30px;
@@ -747,7 +761,6 @@ def load_custom_css():
 
 # =====================================================
 # CONSTANTES E CONFIGURAÇÕES
-# Listas de status aceitos para filtros
 # =====================================================
 STATUS_OFICIAIS = [
     "MANUTENÇÃO", 
@@ -768,10 +781,9 @@ ORDEM_STATUS = STATUS_OFICIAIS + STATUS_ADICIONAIS
 
 # =====================================================
 # FUNÇÕES DE PROCESSAMENTO DE DADOS
-# Limpeza e tratamento dos dados do Excel
 # =====================================================
 def renomear_colunas_duplicadas(df):
-    """Renomeia colunas duplicadas (especialmente UF para UF_ORIGEM e UF_DESTINO)"""
+    """Renomeia colunas duplicadas"""
     cols = pd.Series(df.columns)
     for dup in cols[cols.duplicated()].unique():
         dup_indices = [i for i, x in enumerate(cols) if x == dup]
@@ -785,32 +797,36 @@ def renomear_colunas_duplicadas(df):
     df.columns = cols
     return df
 
-# =====================================================
-# FUNÇÃO COM CACHE PARA CARREGAR DADOS
-# Carrega e processa dados do Excel (com cache)
-# =====================================================
-@st.cache_data
-def load_data_from_file(file_source):
-    """
-    Carrega arquivo Excel e processa dados
-    file_source deve ser um objeto UploadedFile
-    """
+@st.cache_data(ttl=600, max_entries=1, show_spinner=False)
+def load_data_from_file(file_bytes, file_name):
+    """Carrega arquivo Excel e processa dados"""
     try:
-        # Lê Excel
-        df = pd.read_excel(file_source, sheet_name="Frota Agro ")
-        # Primeira linha como header
+        file_io = io.BytesIO(file_bytes)
+        
+        try:
+            df = pd.read_excel(file_io, sheet_name="Frota Agro ")
+        except:
+            file_io.seek(0)
+            try:
+                df = pd.read_excel(file_io, sheet_name="Frota Agro")
+            except:
+                file_io.seek(0)
+                xls = pd.ExcelFile(file_io)
+                file_io.seek(0)
+                df = pd.read_excel(file_io, sheet_name=0)
+        
+        if df.empty:
+            return pd.DataFrame()
+        
         df.columns = df.iloc[0]
         df = df[1:].reset_index(drop=True)
-        # Renomeia duplicadas
         df = renomear_colunas_duplicadas(df)
         
-        # Colunas para converter em texto
         colunas_texto = [
             "STATUS", "TIPO", "POSIÇÃO ATUAL", "PLACA", 
             "MOTORISTA", "OPERAÇÃO", "UF_ORIGEM", "UF_DESTINO", "DESTINO FINAL"
         ]
         
-        # Padroniza texto: uppercase, remove espaços
         for col in colunas_texto:
             if col in df.columns:
                 df[col] = (
@@ -818,16 +834,17 @@ def load_data_from_file(file_source):
                     .replace('NAN', pd.NA).replace('', pd.NA)
                 )
         
-        # Remove linhas sem status
         df = df[df["STATUS"].notna()]
         df = df[df["STATUS"] != ""]
+        
         return df
+        
     except Exception as e:
-        st.error(f"❌ Erro ao carregar dados: {str(e)}")
+        st.error(f"❌ Erro: {str(e)}")
         return pd.DataFrame()
 
 def aplicar_cor_status(row):
-    """Aplica cor de fundo nas linhas da tabela conforme status"""
+    """Aplica cor nas linhas da tabela"""
     status = row["STATUS"]
     if status == "MANUTENÇÃO":
         return ['background-color: #3d1f1f; color: #ff5722'] * len(row)
@@ -837,7 +854,6 @@ def aplicar_cor_status(row):
 
 # =====================================================
 # FUNÇÕES DE GRÁFICOS
-# Criação de visualizações com Plotly
 # =====================================================
 def criar_grafico_status(status_df):
     """Gráfico horizontal de barras por status"""
@@ -851,7 +867,7 @@ def criar_grafico_status(status_df):
             marker=dict(color=cor),
             text=row["QUANTIDADE"],
             textposition='outside',
-            textfont=dict(color='#ffffff', size=14, family='Arial Black'),
+            textfont=dict(color='#ffffff', size=18, family='Arial Black'),
             hovertemplate='<b>%{y}</b><br>Quantidade: %{x}<extra></extra>',
             showlegend=False
         ))
@@ -862,14 +878,14 @@ def criar_grafico_status(status_df):
         margin=dict(l=0, r=40, t=10, b=0),
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
-        font=dict(color='#ffffff', size=11),
-        xaxis=dict(showgrid=True, gridcolor=CORES_INTERFACE["grid"], showline=False, zeroline=False, color=CORES_INTERFACE["texto_secundario"]),
-        yaxis=dict(showgrid=False, showline=False, color='#ffffff', tickfont=dict(size=12))
+        font=dict(color='#ffffff', size=13),
+        xaxis=dict(showgrid=True, gridcolor=CORES_INTERFACE["grid"], showline=False, zeroline=False, color=CORES_INTERFACE["texto_secundario"], tickfont=dict(size=13)),
+        yaxis=dict(showgrid=False, showline=False, color='#ffffff', tickfont=dict(size=14))
     )
     return fig
 
 def criar_grafico_tipo(tipo_df):
-    """Gráfico vertical de barras por tipo de veículo"""
+    """Gráfico vertical de barras por tipo"""
     fig = go.Figure()
     
     for idx, row in tipo_df.iterrows():
@@ -879,7 +895,7 @@ def criar_grafico_tipo(tipo_df):
             marker=dict(color=CORES_TIPO_VEICULO[idx % len(CORES_TIPO_VEICULO)]),
             text=row["QUANTIDADE"],
             textposition='outside',
-            textfont=dict(color='#ffffff', size=14, family='Arial Black'),
+            textfont=dict(color='#ffffff', size=18, family='Arial Black'),
             hovertemplate='<b>%{x}</b><br>Quantidade: %{y}<extra></extra>',
             showlegend=False
         ))
@@ -893,20 +909,20 @@ def criar_grafico_tipo(tipo_df):
         margin=dict(l=0, r=0, t=30, b=0),
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
-        font=dict(color='#ffffff'),
-        xaxis=dict(showgrid=False, showline=False, color=CORES_INTERFACE["texto_secundario"], tickangle=0, tickfont=dict(size=10)),
-        yaxis=dict(showgrid=True, gridcolor=CORES_INTERFACE["grid"], showline=False, zeroline=False, color=CORES_INTERFACE["texto_secundario"], range=[0, valor_max * 1.15])
+        font=dict(color='#ffffff', size=13),
+        xaxis=dict(showgrid=False, showline=False, color=CORES_INTERFACE["texto_secundario"], tickangle=0, tickfont=dict(size=12)),
+        yaxis=dict(showgrid=True, gridcolor=CORES_INTERFACE["grid"], showline=False, zeroline=False, color=CORES_INTERFACE["texto_secundario"], range=[0, valor_max * 1.15], tickfont=dict(size=13))
     )
     return fig
 
 def criar_grafico_posicao(posicao_df):
-    """Gráfico de pizza (donut) por posição atual"""
+    """Gráfico pizza por posição"""
     fig = go.Figure(data=[go.Pie(
         labels=posicao_df.head(10)["POSIÇÃO ATUAL"],
         values=posicao_df.head(10)["QUANTIDADE"],
         hole=0.6,
         marker=dict(colors=CORES_POSICAO),
-        textfont=dict(color='#ffffff', size=12),
+        textfont=dict(color='#ffffff', size=14),
         textinfo='value',
         hovertemplate='<b>%{label}</b><br>Quantidade: %{value}<extra></extra>'
     )])
@@ -920,14 +936,14 @@ def criar_grafico_posicao(posicao_df):
         legend=dict(
             orientation="v", yanchor="middle", y=0.5,
             xanchor="left", x=1.02,
-            font=dict(color='#ffffff', size=10),
+            font=dict(color='#ffffff', size=12),
             bgcolor='rgba(0,0,0,0)'
         )
     )
     return fig
 
 def criar_grafico_uf_origem(uf_df):
-    """Gráfico vertical de barras por UF de origem"""
+    """Gráfico por UF"""
     fig = go.Figure()
     
     for idx, row in uf_df.iterrows():
@@ -937,7 +953,7 @@ def criar_grafico_uf_origem(uf_df):
             marker=dict(color=CORES_UF[idx % len(CORES_UF)]),
             text=row["QUANTIDADE"],
             textposition='outside',
-            textfont=dict(color='#ffffff', size=14, family='Arial Black'),
+            textfont=dict(color='#ffffff', size=18, family='Arial Black'),
             hovertemplate='<b>%{x}</b><br>Veículos: %{y}<extra></extra>',
             showlegend=False
         ))
@@ -951,19 +967,17 @@ def criar_grafico_uf_origem(uf_df):
         margin=dict(l=0, r=0, t=30, b=0),
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
-        font=dict(color='#ffffff'),
-        xaxis=dict(showgrid=False, showline=False, color=CORES_INTERFACE["texto_secundario"], tickangle=0, tickfont=dict(size=11)),
-        yaxis=dict(showgrid=True, gridcolor=CORES_INTERFACE["grid"], showline=False, zeroline=False, color=CORES_INTERFACE["texto_secundario"], range=[0, valor_max * 1.15])
+        font=dict(color='#ffffff', size=13),
+        xaxis=dict(showgrid=False, showline=False, color=CORES_INTERFACE["texto_secundario"], tickangle=0, tickfont=dict(size=13)),
+        yaxis=dict(showgrid=True, gridcolor=CORES_INTERFACE["grid"], showline=False, zeroline=False, color=CORES_INTERFACE["texto_secundario"], range=[0, valor_max * 1.15], tickfont=dict(size=13))
     )
     return fig
 
 # =====================================================
 # FUNÇÕES DE INTERFACE
-# Componentes visuais da aplicação
 # =====================================================
 def criar_header(taxa_disponibilidade=0.0):
-    """Cabeçalho principal com sirene animada e taxa de disponibilidade"""
-    # Carrega a logo em base64
+    """Cabeçalho principal"""
     logo_base64 = get_base64_image("logo_luft.png")
     
     if logo_base64:
@@ -992,10 +1006,7 @@ def criar_header(taxa_disponibilidade=0.0):
     """, unsafe_allow_html=True)
 
 def criar_kpis(df_filtrado):
-    """
-    KPIs principais: Total, Em Operação, Disponíveis, Manutenção
-    Usa HTML customizado para manter cores corretas
-    """
+    """KPIs principais"""
     total = len(df_filtrado)
     em_operacao = len(df_filtrado[df_filtrado["STATUS"].isin(["CARREGADO", "RETORNANDO DISPONÍVEIS"])])
     disponiveis = len(df_filtrado[df_filtrado["STATUS"].isin(["DISPONÍVEIS TRIPULADO", "DISPONÍVEIS NÃO TRIPULADO"])])
@@ -1038,39 +1049,44 @@ def criar_kpis(df_filtrado):
     return em_operacao, disponiveis, manutencao
 
 def criar_sidebar(main_loading_placeholder):
-    """Barra lateral com upload de arquivo e filtros"""
+    """Barra lateral"""
     with st.sidebar:
         st.header("🎛️ FILTROS OPERACIONAIS")
         st.divider()
         
-        # ===== UPLOAD MANUAL OBRIGATÓRIO =====
         st.subheader("📁 CARREGAR ARQUIVO")
         
         uploaded_file = st.file_uploader(
             "Faça upload do arquivo Excel",
             type=['xlsx', 'xls'],
-            help="Selecione o arquivo da planilha de frota"
+            help="Selecione o arquivo da planilha de frota",
+            key="file_uploader_main"
         )
         
         df_base = pd.DataFrame()
         
-        # Só processa se houver arquivo
         if uploaded_file is not None:
-            show_loading_screen(main_loading_placeholder)
-            df_base = load_data_from_file(uploaded_file)
-            main_loading_placeholder.empty()
-            
-            if not df_base.empty:
-                st.success("✅ Arquivo carregado com sucesso!")
+            try:
+                show_loading_screen(main_loading_placeholder)
+                file_bytes = uploaded_file.read()
+                df_base = load_data_from_file(file_bytes, uploaded_file.name)
+                main_loading_placeholder.empty()
+                
+                if not df_base.empty:
+                    st.success("✅ Arquivo carregado!")
+                    st.info(f"📊 **{len(df_base)}** veículos")
+                    
+            except Exception as e:
+                main_loading_placeholder.empty()
+                st.error(f"❌ Erro: {str(e)}")
+                return pd.DataFrame(), [], [], [], []
         
         st.divider()
         
-        # Se não há dados, retorna vazios
         if df_base.empty:
-            st.info("⬆️ Faça upload de um arquivo Excel para visualizar os dados.")
+            st.info("⬆️ Faça upload de um arquivo Excel")
             return pd.DataFrame(), [], [], [], []
         
-        # Checkbox para incluir todos status
         incluir_todos_status = st.checkbox("📋 Incluir TODOS os STATUS", value=False)
         
         if incluir_todos_status:
@@ -1078,69 +1094,64 @@ def criar_sidebar(main_loading_placeholder):
         else:
             STATUS_PARA_USAR = STATUS_OFICIAIS
         
-        # Filtra base pelos status permitidos
         df_base_filtrado = df_base[df_base["STATUS"].isin(STATUS_PARA_USAR)].copy()
         
-        # Filtro de Status
         status_disponiveis = sorted([s for s in df_base_filtrado["STATUS"].unique() if s in STATUS_PARA_USAR])
         status_sel = st.multiselect("📊 STATUS", status_disponiveis, default=status_disponiveis)
         
-        # Filtro de Tipo
         tipos_disponiveis = sorted([t for t in df_base_filtrado["TIPO"].unique() if pd.notna(t) and t != ""])
         tipo_sel = st.multiselect("🚛 TIPO DE VEÍCULO", tipos_disponiveis, default=tipos_disponiveis)
         
-        # Filtro de Posição
         posicoes_disponiveis = sorted([p for p in df_base_filtrado["POSIÇÃO ATUAL"].unique() if pd.notna(p) and p != ""])
         pos_sel = st.multiselect("📍 POSIÇÃO ATUAL", posicoes_disponiveis, default=posicoes_disponiveis)
         
-        # Filtro de UF
         if "UF_ORIGEM" in df_base_filtrado.columns:
             ufs_disponiveis = sorted([u for u in df_base_filtrado["UF_ORIGEM"].unique() if pd.notna(u) and u != ""])
             uf_sel = st.multiselect("🗺️ UF DE ORIGEM", ufs_disponiveis, default=ufs_disponiveis)
         else:
             uf_sel = []
         
-        # Botão atualizar manual
-        if st.button("🔄 ATUALIZAR DADOS AGORA", use_container_width=True):
+        st.divider()
+        
+        if st.button("🔄 LIMPAR CACHE", use_container_width=True):
             st.cache_data.clear()
             st.rerun()
         
         return df_base_filtrado, status_sel, tipo_sel, pos_sel, uf_sel
 
 def criar_painel_status(status_df):
-    """Painel com gráfico de distribuição por status"""
+    """Painel de status"""
     with st.container(border=True):
         st.markdown('<div class="card-title">📊 STATUS DA FROTA</div>', unsafe_allow_html=True)
         fig_status = criar_grafico_status(status_df)
         st.plotly_chart(fig_status, use_container_width=True, config={'displayModeBar': False})
 
 def criar_painel_uf(uf_df):
-    """Painel com gráfico de distribuição por UF de origem"""
+    """Painel UF"""
     with st.container(border=True):
         st.markdown('<div class="card-title">🗺️ DISTRIBUIÇÃO POR UF (ORIGEM)</div>', unsafe_allow_html=True)
         fig_uf = criar_grafico_uf_origem(uf_df)
         st.plotly_chart(fig_uf, use_container_width=True, config={'displayModeBar': False})
 
 def criar_painel_tipo(tipo_df):
-    """Painel com gráfico de distribuição por tipo de veículo"""
+    """Painel tipo"""
     with st.container(border=True):
         st.markdown('<div class="card-title">🚛 TIPO DE VEÍCULO</div>', unsafe_allow_html=True)
         fig_tipo = criar_grafico_tipo(tipo_df)
         st.plotly_chart(fig_tipo, use_container_width=True, config={'displayModeBar': False})
 
 def criar_painel_posicao(posicao_df):
-    """Painel com gráfico pizza de posições atuais"""
+    """Painel posição"""
     with st.container(border=True):
         st.markdown('<div class="card-title">📍 POSIÇÃO ATUAL</div>', unsafe_allow_html=True)
         fig_pos = criar_grafico_posicao(posicao_df)
         st.plotly_chart(fig_pos, use_container_width=True, config={'displayModeBar': False})
 
 def criar_tabela_detalhada(df_filtrado):
-    """Tabela detalhada com todos os veículos filtrados"""
+    """Tabela detalhada"""
     with st.container(border=True):
         st.markdown('<div class="card-title">📋 DETALHAMENTO COMPLETO DA FROTA</div>', unsafe_allow_html=True)
         
-        # Seleciona colunas para exibir
         colunas_exibir = ["PLACA", "STATUS", "TIPO", "POSIÇÃO ATUAL"]
         
         if "UF_ORIGEM" in df_filtrado.columns:
@@ -1154,7 +1165,6 @@ def criar_tabela_detalhada(df_filtrado):
         
         df_display = df_filtrado[colunas_exibir].copy()
         
-        # Tabela com cores por status
         st.dataframe(
             df_display.style.apply(aplicar_cor_status, axis=1),
             hide_index=True,
@@ -1164,24 +1174,51 @@ def criar_tabela_detalhada(df_filtrado):
 
 # =====================================================
 # FUNÇÃO PRINCIPAL
-# Orquestra toda a aplicação
 # =====================================================
 def main():
-    # Carrega CSS
     load_custom_css()
-    
-    # Placeholder global para tela de loading
     loading_placeholder = st.empty()
-    
-    # Cria sidebar e processa upload
     df_base_filtrado, status_sel, tipo_sel, pos_sel, uf_sel = criar_sidebar(loading_placeholder)
     
-    # Se não houver dados, para execução
     if df_base_filtrado.empty:
-        st.warning("⚠️ Por favor, carregue um arquivo Excel na barra lateral para visualizar os dados.")
+        st.markdown("""
+        <style>
+        .centered-warning {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 60vh;
+            text-align: center;
+        }
+        .warning-box {
+            background-color: #1e1e1e;
+            border: 2px solid #ff9800;
+            border-radius: 15px;
+            padding: 40px 60px;
+            box-shadow: 0 0 20px rgba(255, 152, 0, 0.3);
+        }
+        .warning-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        .warning-text {
+            font-size: 1.3rem;
+            color: #ffffff;
+            font-weight: 600;
+            line-height: 1.6;
+        }
+        </style>
+        <div class="centered-warning">
+            <div class="warning-box">
+                <div class="warning-icon">⚠️</div>
+                <div class="warning-text">
+                    Por favor, carregue um arquivo Excel<br>na barra lateral para visualizar os dados.
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
         st.stop()
     
-    # Aplica filtros selecionados
     filtro_aplicado = (
         (df_base_filtrado["STATUS"].isin(status_sel)) &
         (df_base_filtrado["TIPO"].isin(tipo_sel)) &
@@ -1193,18 +1230,13 @@ def main():
     
     df_filtrado = df_base_filtrado[filtro_aplicado].copy()
     
-    # Calcula taxa de disponibilidade
     manutencao_count = len(df_filtrado[df_filtrado["STATUS"] == "MANUTENÇÃO"])
     taxa_disponibilidade = ((len(df_filtrado) - manutencao_count) / len(df_filtrado) * 100) if len(df_filtrado) > 0 else 0.0
 
-    # Cria header
     criar_header(taxa_disponibilidade)
-    
-    # Cria KPIs
     em_operacao, disponiveis, manutencao = criar_kpis(df_filtrado)
     st.markdown("<br>", unsafe_allow_html=True)
     
-    # Prepara DataFrames para gráficos
     status_counts = df_filtrado["STATUS"].value_counts()
     status_df = pd.DataFrame({
         "STATUS": [s for s in ORDEM_STATUS if s in status_counts.index],
@@ -1225,8 +1257,6 @@ def main():
     else:
         uf_origem_df = pd.DataFrame()
     
-    # ========== PRIMEIRA LINHA DE PAINÉIS ==========
-    # Status e Posição
     col_graf1, col_graf2 = st.columns(2)
     
     with col_graf1:
@@ -1235,8 +1265,6 @@ def main():
     with col_graf2:
         criar_painel_posicao(posicao_df)
     
-    # ========== SEGUNDA LINHA DE PAINÉIS ==========
-    # Tipo e UF
     st.markdown("<br>", unsafe_allow_html=True)
     col_graf4, col_graf5 = st.columns(2)
     
@@ -1247,13 +1275,8 @@ def main():
         if not uf_origem_df.empty:
             criar_painel_uf(uf_origem_df)
     
-    # Tabela detalhada
     st.markdown("<br>", unsafe_allow_html=True)
     criar_tabela_detalhada(df_filtrado)
 
-# =====================================================
-# EXECUÇÃO
-# Ponto de entrada do programa
-# =====================================================
 if __name__ == "__main__":
     main()
