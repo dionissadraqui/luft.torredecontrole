@@ -5,16 +5,8 @@ from datetime import datetime
 import numpy as np
 import streamlit as st
 import base64
-import time
-import os
 
-#  >    executar  >   python -m streamlit run torre_controle_auto_refresh.py  <
-
-# =====================================================
-# CONFIGURAÇÃO DE AUTO-REFRESH
-# Atualiza automaticamente a cada 2 horas
-# =====================================================
-INTERVALO_ATUALIZACAO_SEGUNDOS = 2 * 60 * 60  # 2 horas em segundos
+#  >    executar  >   python -m streamlit run torre_controle.py  
 
 # =====================================================
 # CONFIGURAÇÕES DE CORES E ESTILOS - CENTRALIZADAS
@@ -87,12 +79,12 @@ CORES_SIRENE = {
 
 # Cores do Mini Painel de Disponibilidade - Widget no header
 CORES_DISPONIBILIDADE = {
-    "background_start": "#1a2e1a",
-    "background_end": "#1e3a1e",
+    "background_start": "#000000",
+    "background_end": "#000000",
     "border": "#2e5a2e",
-    "label": "#6aaa6a",
-    "valor": "#4caf50",
-    "subtitle": "#5a8a5a"
+    "label": "#000000fa",
+    "valor": "#000000",
+    "subtitle": "#000000"
 }
 
 # Cores Gerais da Interface - Elementos comuns
@@ -123,12 +115,6 @@ st.set_page_config(
     page_icon="🚛",
     initial_sidebar_state="expanded"
 )
-
-# =====================================================
-# CONSTANTE DO NOME DO ARQUIVO PADRÃO
-# Nome do arquivo Excel que será carregado automaticamente
-# =====================================================
-NOME_ARQUIVO_PADRAO = "STATUS FROTA LUFT BARUERI °.xlsx"
 
 # =====================================================
 # FUNÇÃO PARA CODIFICAR IMAGEM EM BASE64
@@ -387,9 +373,46 @@ def load_custom_css():
         margin: 0;
     }}
 
+    .header-left {{
+        display: flex;
+        align-items: center;
+        padding-left: 15px;
+        min-width: 220px;
+    }}
+
     .header-center {{
         flex: 1;
-        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-right: 200px;
+    }}
+
+    /* ====== LOGO NO HEADER ====== */
+    /* Estilo da logo centralizada */
+    .header-logo {{
+        max-height: 120px;
+        max-width: 750px;
+        width: 95%;
+        height: auto;
+        object-fit: contain;
+        margin: 0;
+        display: block;
+        filter: drop-shadow(0 2px 8px rgba(255, 255, 255, 0.2));
+        transition: all 0.3s ease;
+    }}
+    
+    .header-logo:hover {{
+        filter: drop-shadow(0 4px 12px rgba(255, 255, 255, 0.4));
+        transform: scale(1.02);
+    }}
+    
+    .header-logo-placeholder {{
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: {CORES_HEADER["title"]};
+        margin-bottom: 8px;
+        letter-spacing: 1px;
     }}
 
     /* ====== MINI PAINEL DE DISPONIBILIDADE NO HEADER ====== */
@@ -763,29 +786,14 @@ def renomear_colunas_duplicadas(df):
     return df
 
 # =====================================================
-# FUNÇÃO PARA VERIFICAR SE ARQUIVO EXISTE NA PASTA
-# Verifica se arquivo padrão está disponível no diretório
-# =====================================================
-def verificar_arquivo_local():
-    """Verifica se o arquivo padrão existe no diretório do script"""
-    # Caminho do diretório onde o script está executando
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    caminho_arquivo = os.path.join(script_dir, NOME_ARQUIVO_PADRAO)
-    
-    if os.path.exists(caminho_arquivo):
-        return caminho_arquivo
-    return None
-
-# =====================================================
 # FUNÇÃO COM CACHE PARA CARREGAR DADOS
-# Carrega e processa dados do Excel (com cache e TTL)
+# Carrega e processa dados do Excel (com cache)
 # =====================================================
-@st.cache_data(ttl=INTERVALO_ATUALIZACAO_SEGUNDOS)
+@st.cache_data
 def load_data_from_file(file_source):
     """
     Carrega arquivo Excel e processa dados
-    file_source pode ser um caminho de arquivo (str) ou um objeto UploadedFile
-    Cache expira a cada 2 horas (INTERVALO_ATUALIZACAO_SEGUNDOS)
+    file_source deve ser um objeto UploadedFile
     """
     try:
         # Lê Excel
@@ -843,7 +851,7 @@ def criar_grafico_status(status_df):
             marker=dict(color=cor),
             text=row["QUANTIDADE"],
             textposition='outside',
-            textfont=dict(color='#ffffff', size=14, family='Arial Black'),
+            textfont=dict(color='#ffffff', size=18, family='Arial Black'),
             hovertemplate='<b>%{y}</b><br>Quantidade: %{x}<extra></extra>',
             showlegend=False
         ))
@@ -854,9 +862,9 @@ def criar_grafico_status(status_df):
         margin=dict(l=0, r=40, t=10, b=0),
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
-        font=dict(color='#ffffff', size=11),
-        xaxis=dict(showgrid=True, gridcolor=CORES_INTERFACE["grid"], showline=False, zeroline=False, color=CORES_INTERFACE["texto_secundario"]),
-        yaxis=dict(showgrid=False, showline=False, color='#ffffff', tickfont=dict(size=12))
+        font=dict(color='#ffffff', size=13),
+        xaxis=dict(showgrid=True, gridcolor=CORES_INTERFACE["grid"], showline=False, zeroline=False, color=CORES_INTERFACE["texto_secundario"], tickfont=dict(size=13)),
+        yaxis=dict(showgrid=False, showline=False, color='#ffffff', tickfont=dict(size=14))
     )
     return fig
 
@@ -871,7 +879,7 @@ def criar_grafico_tipo(tipo_df):
             marker=dict(color=CORES_TIPO_VEICULO[idx % len(CORES_TIPO_VEICULO)]),
             text=row["QUANTIDADE"],
             textposition='outside',
-            textfont=dict(color='#ffffff', size=14, family='Arial Black'),
+            textfont=dict(color='#ffffff', size=18, family='Arial Black'),
             hovertemplate='<b>%{x}</b><br>Quantidade: %{y}<extra></extra>',
             showlegend=False
         ))
@@ -885,9 +893,9 @@ def criar_grafico_tipo(tipo_df):
         margin=dict(l=0, r=0, t=30, b=0),
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
-        font=dict(color='#ffffff'),
-        xaxis=dict(showgrid=False, showline=False, color=CORES_INTERFACE["texto_secundario"], tickangle=0, tickfont=dict(size=10)),
-        yaxis=dict(showgrid=True, gridcolor=CORES_INTERFACE["grid"], showline=False, zeroline=False, color=CORES_INTERFACE["texto_secundario"], range=[0, valor_max * 1.15])
+        font=dict(color='#ffffff', size=13),
+        xaxis=dict(showgrid=False, showline=False, color=CORES_INTERFACE["texto_secundario"], tickangle=0, tickfont=dict(size=12)),
+        yaxis=dict(showgrid=True, gridcolor=CORES_INTERFACE["grid"], showline=False, zeroline=False, color=CORES_INTERFACE["texto_secundario"], range=[0, valor_max * 1.15], tickfont=dict(size=13))
     )
     return fig
 
@@ -898,7 +906,7 @@ def criar_grafico_posicao(posicao_df):
         values=posicao_df.head(10)["QUANTIDADE"],
         hole=0.6,
         marker=dict(colors=CORES_POSICAO),
-        textfont=dict(color='#ffffff', size=12),
+        textfont=dict(color='#ffffff', size=14),
         textinfo='value',
         hovertemplate='<b>%{label}</b><br>Quantidade: %{value}<extra></extra>'
     )])
@@ -912,7 +920,7 @@ def criar_grafico_posicao(posicao_df):
         legend=dict(
             orientation="v", yanchor="middle", y=0.5,
             xanchor="left", x=1.02,
-            font=dict(color='#ffffff', size=10),
+            font=dict(color='#ffffff', size=12),
             bgcolor='rgba(0,0,0,0)'
         )
     )
@@ -929,7 +937,7 @@ def criar_grafico_uf_origem(uf_df):
             marker=dict(color=CORES_UF[idx % len(CORES_UF)]),
             text=row["QUANTIDADE"],
             textposition='outside',
-            textfont=dict(color='#ffffff', size=14, family='Arial Black'),
+            textfont=dict(color='#ffffff', size=18, family='Arial Black'),
             hovertemplate='<b>%{x}</b><br>Veículos: %{y}<extra></extra>',
             showlegend=False
         ))
@@ -943,9 +951,9 @@ def criar_grafico_uf_origem(uf_df):
         margin=dict(l=0, r=0, t=30, b=0),
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
-        font=dict(color='#ffffff'),
-        xaxis=dict(showgrid=False, showline=False, color=CORES_INTERFACE["texto_secundario"], tickangle=0, tickfont=dict(size=11)),
-        yaxis=dict(showgrid=True, gridcolor=CORES_INTERFACE["grid"], showline=False, zeroline=False, color=CORES_INTERFACE["texto_secundario"], range=[0, valor_max * 1.15])
+        font=dict(color='#ffffff', size=13),
+        xaxis=dict(showgrid=False, showline=False, color=CORES_INTERFACE["texto_secundario"], tickangle=0, tickfont=dict(size=13)),
+        yaxis=dict(showgrid=True, gridcolor=CORES_INTERFACE["grid"], showline=False, zeroline=False, color=CORES_INTERFACE["texto_secundario"], range=[0, valor_max * 1.15], tickfont=dict(size=13))
     )
     return fig
 
@@ -955,6 +963,14 @@ def criar_grafico_uf_origem(uf_df):
 # =====================================================
 def criar_header(taxa_disponibilidade=0.0):
     """Cabeçalho principal com sirene animada e taxa de disponibilidade"""
+    # Carrega a logo em base64
+    logo_base64 = get_base64_image("logo_luft.png")
+    
+    if logo_base64:
+        logo_html = f'<img src="data:image/png;base64,{logo_base64}" class="header-logo" alt="Logo Luft">'
+    else:
+        logo_html = '<div class="header-logo-placeholder">🚨 TORRE DE CONTROLE</div>'
+    
     st.markdown(f"""
     <div class="main-header">
         <div class="sirene-container">
@@ -962,9 +978,11 @@ def criar_header(taxa_disponibilidade=0.0):
             <div class="sirene-light"></div>
             <div class="sirene-base"></div>
         </div>
-        <div class="header-center">
-            <h1>🚨 TORRE DE CONTROLE – FROTA AGRO | LUFT BARUERI</h1>
+        <div class="header-left">
             <p><span class="status-dot"></span>ATUALIZADO EM: {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}</p>
+        </div>
+        <div class="header-center">
+            {logo_html}
         </div>
         <div class="mini-disponibilidade">
             <div class="mini-label">DISPONIBILIDADE</div>
@@ -1025,57 +1043,31 @@ def criar_sidebar(main_loading_placeholder):
         st.header("🎛️ FILTROS OPERACIONAIS")
         st.divider()
         
-        # ===== INFORMAÇÃO DE AUTO-REFRESH =====
-        st.info("🔄 **ATUALIZAÇÃO AUTOMÁTICA ATIVADA**\n\nOs dados são atualizados automaticamente a cada 2 horas.")
-        st.divider()
-        
-        # ===== CARREGAMENTO AUTOMÁTICO =====
-        # Verifica se existe arquivo local
-        arquivo_local = verificar_arquivo_local()
-        
-        df_base = pd.DataFrame()
-        arquivo_carregado_automaticamente = False
-        
-        if arquivo_local:
-            # Arquivo encontrado localmente - carrega automaticamente
-            try:
-                show_loading_screen(main_loading_placeholder)
-                df_base = load_data_from_file(arquivo_local)
-                main_loading_placeholder.empty()
-                
-                if not df_base.empty:
-                    st.success(f"✅ Arquivo '{NOME_ARQUIVO_PADRAO}' carregado automaticamente!")
-                    arquivo_carregado_automaticamente = True
-            except Exception as e:
-                st.warning(f"⚠️ Erro ao carregar arquivo local: {str(e)}")
-        
-        # ===== OPÇÃO DE UPLOAD MANUAL =====
-        # Sempre mostra a opção de upload, mesmo com arquivo automático
+        # ===== UPLOAD MANUAL OBRIGATÓRIO =====
         st.subheader("📁 CARREGAR ARQUIVO")
         
-        if arquivo_carregado_automaticamente:
-            st.info(f"💡 Arquivo local já carregado. Você pode fazer upload de outro arquivo se desejar.")
-        
         uploaded_file = st.file_uploader(
-            "Faça upload de um arquivo Excel (opcional)" if arquivo_carregado_automaticamente else "Faça upload do arquivo Excel",
+            "Faça upload do arquivo Excel",
             type=['xlsx', 'xls'],
             help="Selecione o arquivo da planilha de frota"
         )
         
-        # Se usuário fez upload manual, usa esse arquivo
+        df_base = pd.DataFrame()
+        
+        # Só processa se houver arquivo
         if uploaded_file is not None:
             show_loading_screen(main_loading_placeholder)
             df_base = load_data_from_file(uploaded_file)
             main_loading_placeholder.empty()
             
             if not df_base.empty:
-                st.success("✅ Arquivo manual carregado com sucesso!")
+                st.success("✅ Arquivo carregado com sucesso!")
         
         st.divider()
         
         # Se não há dados, retorna vazios
         if df_base.empty:
-            st.info(f"⬆️ Arquivo '{NOME_ARQUIVO_PADRAO}' não encontrado na pasta. Faça upload de um arquivo Excel na barra lateral.")
+            st.info("⬆️ Faça upload de um arquivo Excel para visualizar os dados.")
             return pd.DataFrame(), [], [], [], []
         
         # Checkbox para incluir todos status
@@ -1186,7 +1178,7 @@ def main():
     
     # Se não houver dados, para execução
     if df_base_filtrado.empty:
-        st.warning(f"⚠️ Arquivo '{NOME_ARQUIVO_PADRAO}' não encontrado. Por favor, carregue um arquivo Excel na barra lateral para visualizar os dados.")
+        st.warning("⚠️ Por favor, carregue um arquivo Excel na barra lateral para visualizar os dados.")
         st.stop()
     
     # Aplica filtros selecionados
@@ -1258,12 +1250,6 @@ def main():
     # Tabela detalhada
     st.markdown("<br>", unsafe_allow_html=True)
     criar_tabela_detalhada(df_filtrado)
-    
-    # =====================================================
-    # AUTO-REFRESH: Recarrega página automaticamente
-    # =====================================================
-    time.sleep(INTERVALO_ATUALIZACAO_SEGUNDOS)
-    st.rerun()
 
 # =====================================================
 # EXECUÇÃO
