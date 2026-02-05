@@ -851,7 +851,7 @@ def criar_grafico_status(status_df):
             marker=dict(color=cor),
             text=row["QUANTIDADE"],
             textposition='outside',
-            textfont=dict(color='#ffffff', size=18, family='Arial Black'),
+            textfont=dict(color='#ffffff', size=14, family='Arial Black'),
             hovertemplate='<b>%{y}</b><br>Quantidade: %{x}<extra></extra>',
             showlegend=False
         ))
@@ -862,9 +862,9 @@ def criar_grafico_status(status_df):
         margin=dict(l=0, r=40, t=10, b=0),
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
-        font=dict(color='#ffffff', size=13),
-        xaxis=dict(showgrid=True, gridcolor=CORES_INTERFACE["grid"], showline=False, zeroline=False, color=CORES_INTERFACE["texto_secundario"], tickfont=dict(size=13)),
-        yaxis=dict(showgrid=False, showline=False, color='#ffffff', tickfont=dict(size=14))
+        font=dict(color='#ffffff', size=11),
+        xaxis=dict(showgrid=True, gridcolor=CORES_INTERFACE["grid"], showline=False, zeroline=False, color=CORES_INTERFACE["texto_secundario"]),
+        yaxis=dict(showgrid=False, showline=False, color='#ffffff', tickfont=dict(size=12))
     )
     return fig
 
@@ -879,7 +879,7 @@ def criar_grafico_tipo(tipo_df):
             marker=dict(color=CORES_TIPO_VEICULO[idx % len(CORES_TIPO_VEICULO)]),
             text=row["QUANTIDADE"],
             textposition='outside',
-            textfont=dict(color='#ffffff', size=18, family='Arial Black'),
+            textfont=dict(color='#ffffff', size=14, family='Arial Black'),
             hovertemplate='<b>%{x}</b><br>Quantidade: %{y}<extra></extra>',
             showlegend=False
         ))
@@ -893,9 +893,9 @@ def criar_grafico_tipo(tipo_df):
         margin=dict(l=0, r=0, t=30, b=0),
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
-        font=dict(color='#ffffff', size=13),
-        xaxis=dict(showgrid=False, showline=False, color=CORES_INTERFACE["texto_secundario"], tickangle=0, tickfont=dict(size=12)),
-        yaxis=dict(showgrid=True, gridcolor=CORES_INTERFACE["grid"], showline=False, zeroline=False, color=CORES_INTERFACE["texto_secundario"], range=[0, valor_max * 1.15], tickfont=dict(size=13))
+        font=dict(color='#ffffff'),
+        xaxis=dict(showgrid=False, showline=False, color=CORES_INTERFACE["texto_secundario"], tickangle=0, tickfont=dict(size=10)),
+        yaxis=dict(showgrid=True, gridcolor=CORES_INTERFACE["grid"], showline=False, zeroline=False, color=CORES_INTERFACE["texto_secundario"], range=[0, valor_max * 1.15])
     )
     return fig
 
@@ -906,7 +906,7 @@ def criar_grafico_posicao(posicao_df):
         values=posicao_df.head(10)["QUANTIDADE"],
         hole=0.6,
         marker=dict(colors=CORES_POSICAO),
-        textfont=dict(color='#ffffff', size=14),
+        textfont=dict(color='#ffffff', size=12),
         textinfo='value',
         hovertemplate='<b>%{label}</b><br>Quantidade: %{value}<extra></extra>'
     )])
@@ -920,7 +920,7 @@ def criar_grafico_posicao(posicao_df):
         legend=dict(
             orientation="v", yanchor="middle", y=0.5,
             xanchor="left", x=1.02,
-            font=dict(color='#ffffff', size=12),
+            font=dict(color='#ffffff', size=10),
             bgcolor='rgba(0,0,0,0)'
         )
     )
@@ -937,7 +937,7 @@ def criar_grafico_uf_origem(uf_df):
             marker=dict(color=CORES_UF[idx % len(CORES_UF)]),
             text=row["QUANTIDADE"],
             textposition='outside',
-            textfont=dict(color='#ffffff', size=18, family='Arial Black'),
+            textfont=dict(color='#ffffff', size=14, family='Arial Black'),
             hovertemplate='<b>%{x}</b><br>Veículos: %{y}<extra></extra>',
             showlegend=False
         ))
@@ -951,9 +951,9 @@ def criar_grafico_uf_origem(uf_df):
         margin=dict(l=0, r=0, t=30, b=0),
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
-        font=dict(color='#ffffff', size=13),
-        xaxis=dict(showgrid=False, showline=False, color=CORES_INTERFACE["texto_secundario"], tickangle=0, tickfont=dict(size=13)),
-        yaxis=dict(showgrid=True, gridcolor=CORES_INTERFACE["grid"], showline=False, zeroline=False, color=CORES_INTERFACE["texto_secundario"], range=[0, valor_max * 1.15], tickfont=dict(size=13))
+        font=dict(color='#ffffff'),
+        xaxis=dict(showgrid=False, showline=False, color=CORES_INTERFACE["texto_secundario"], tickangle=0, tickfont=dict(size=11)),
+        yaxis=dict(showgrid=True, gridcolor=CORES_INTERFACE["grid"], showline=False, zeroline=False, color=CORES_INTERFACE["texto_secundario"], range=[0, valor_max * 1.15])
     )
     return fig
 
