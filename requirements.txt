@@ -1,0 +1,14 @@
+streamlit
+pandas
+plotly
+numpy
+openpyxl
+```
+
+## Estrutura do seu repositório deve ficar assim:
+```
+luft.torredecontrole/
+├── torre_controle.py
+├── requirements.txt
+├── luft.png (se você tiver esta imagem)
+└── STATUS FROTA LUFT BARUERI °.xlsx (se aplicável)
