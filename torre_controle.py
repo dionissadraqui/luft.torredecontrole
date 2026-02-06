@@ -385,7 +385,6 @@ def load_custom_css():
         display: flex;
         align-items: center;
         justify-content: center;
-        padding-right: 200px;
     }}
 
     /* ====== LOGO NO HEADER ====== */
@@ -991,8 +990,6 @@ def criar_header(taxa_disponibilidade=0.0):
             <div class="sirene-beam"></div>
             <div class="sirene-light"></div>
             <div class="sirene-base"></div>
-        </div>
-        <div class="header-left">
         </div>
         <div class="header-center">
             {logo_html}
