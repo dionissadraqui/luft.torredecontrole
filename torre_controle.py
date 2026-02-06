@@ -993,7 +993,6 @@ def criar_header(taxa_disponibilidade=0.0):
             <div class="sirene-base"></div>
         </div>
         <div class="header-left">
-            <p><span class="status-dot"></span>ATUALIZADO EM: {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}</p>
         </div>
         <div class="header-center">
             {logo_html}
