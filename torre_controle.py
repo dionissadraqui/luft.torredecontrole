@@ -223,13 +223,10 @@ def load_custom_css():
     st.markdown(f"""
     <style>
     /* ====== FORÇAR SOBREPOSIÇÃO COMPLETA DO STREAMLIT ====== */
-    /* Fonte padrão para toda aplicação */
     * {{
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
     }}
     
-    /* ====== REMOVER HEADER PADRÃO STREAMLIT ====== */
-    /* Esconde header nativo do Streamlit */
     header[data-testid="stHeader"] {{
         background-color: rgba(0,0,0,0) !important;
         backdrop-filter: none !important;
@@ -247,8 +244,6 @@ def load_custom_css():
         padding-top: 2rem !important;
     }}
     
-    /* ====== FUNDO GERAL ====== */
-    /* Gradiente de fundo da aplicação */
     .stApp {{
         background: linear-gradient(135deg, {CORES_INTERFACE["fundo_gradiente_start"]} 0%, {CORES_INTERFACE["fundo_gradiente_end"]} 100%) !important;
     }}
@@ -260,8 +255,6 @@ def load_custom_css():
         padding-right: 2rem !important;
     }}
     
-    /* ====== PAINÉIS/CONTAINERS ====== */
-    /* Estilo dos cartões/painéis */
     div[data-testid="stVerticalBlock"] > div[data-testid="stVerticalBlockBorderWrapper"] {{
         background-color: {CORES_INTERFACE["painel_background"]} !important;
         border: 1px solid {CORES_INTERFACE["painel_border"]} !important;
@@ -270,8 +263,6 @@ def load_custom_css():
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
     }}
     
-    /* ====== TÍTULOS DOS PAINÉIS ====== */
-    /* Cabeçalhos dos cartões */
     .card-title {{
         font-weight: 700;
         font-size: 0.95rem;
@@ -285,11 +276,10 @@ def load_custom_css():
     }}
     
     /* ====== KPI CARDS CUSTOM ====== */
-    /* Cartões de métricas principais */
     .kpi-card {{
         background-color: {CORES_INTERFACE["painel_background"]};
         border-radius: 10px;
-        padding: 25px 15px;
+        padding: 25px 15px 15px 15px;
         text-align: center;
         width: 100%;
         box-sizing: border-box;
@@ -305,10 +295,10 @@ def load_custom_css():
         font-size: 3rem;
         font-weight: 700;
         line-height: 1.1;
+        margin-bottom: 12px;
     }}
 
     /* AZUL - TOTAL */
-    /* KPI de total de veículos */
     .kpi-azul {{
         border: 2px solid {CORES_KPI["TOTAL"]["border"]};
         box-shadow: 0 0 15px {CORES_KPI["TOTAL"]["shadow"]}, 0 4px 15px rgba(0,0,0,0.3);
@@ -317,7 +307,6 @@ def load_custom_css():
     .kpi-azul .kpi-value {{ color: {CORES_KPI["TOTAL"]["text"]}; }}
 
     /* LARANJA - EM OPERAÇÃO */
-    /* KPI de veículos em operação */
     .kpi-laranja {{
         border: 2px solid {CORES_KPI["OPERACAO"]["border"]};
         box-shadow: 0 0 15px {CORES_KPI["OPERACAO"]["shadow"]}, 0 4px 15px rgba(0,0,0,0.3);
@@ -326,7 +315,6 @@ def load_custom_css():
     .kpi-laranja .kpi-value {{ color: {CORES_KPI["OPERACAO"]["text"]}; }}
 
     /* VERDE - DISPONÍVEIS */
-    /* KPI de veículos disponíveis */
     .kpi-verde {{
         border: 2px solid {CORES_KPI["DISPONIVEIS"]["border"]};
         box-shadow: 0 0 15px {CORES_KPI["DISPONIVEIS"]["shadow"]}, 0 4px 15px rgba(0,0,0,0.3);
@@ -335,7 +323,6 @@ def load_custom_css():
     .kpi-verde .kpi-value {{ color: {CORES_KPI["DISPONIVEIS"]["text"]}; }}
 
     /* VERMELHO - MANUTENÇÃO */
-    /* KPI de veículos em manutenção */
     .kpi-vermelho {{
         border: 2px solid {CORES_KPI["MANUTENCAO"]["border"]};
         box-shadow: 0 0 15px {CORES_KPI["MANUTENCAO"]["shadow"]}, 0 4px 15px rgba(0,0,0,0.3);
@@ -343,8 +330,123 @@ def load_custom_css():
     .kpi-vermelho .kpi-label {{ color: {CORES_KPI["MANUTENCAO"]["text"]}; }}
     .kpi-vermelho .kpi-value {{ color: {CORES_KPI["MANUTENCAO"]["text"]}; }}
 
+    /* ====== BOTÃO VER DETALHES NOS KPIs ====== */
+    .kpi-btn-azul button {{
+        background-color: transparent !important;
+        color: {CORES_KPI["TOTAL"]["text"]} !important;
+        border: 1px solid {CORES_KPI["TOTAL"]["border"]} !important;
+        border-radius: 5px !important;
+        font-size: 0.72rem !important;
+        font-weight: 600 !important;
+        padding: 4px 10px !important;
+        letter-spacing: 0.5px !important;
+        width: 100% !important;
+        transition: all 0.2s !important;
+    }}
+    .kpi-btn-azul button:hover {{
+        background-color: {CORES_KPI["TOTAL"]["border"]} !important;
+        color: white !important;
+        box-shadow: 0 0 10px {CORES_KPI["TOTAL"]["shadow"]} !important;
+    }}
+
+    .kpi-btn-laranja button {{
+        background-color: transparent !important;
+        color: {CORES_KPI["OPERACAO"]["text"]} !important;
+        border: 1px solid {CORES_KPI["OPERACAO"]["border"]} !important;
+        border-radius: 5px !important;
+        font-size: 0.72rem !important;
+        font-weight: 600 !important;
+        padding: 4px 10px !important;
+        letter-spacing: 0.5px !important;
+        width: 100% !important;
+        transition: all 0.2s !important;
+    }}
+    .kpi-btn-laranja button:hover {{
+        background-color: {CORES_KPI["OPERACAO"]["border"]} !important;
+        color: white !important;
+        box-shadow: 0 0 10px {CORES_KPI["OPERACAO"]["shadow"]} !important;
+    }}
+
+    .kpi-btn-verde button {{
+        background-color: transparent !important;
+        color: {CORES_KPI["DISPONIVEIS"]["text"]} !important;
+        border: 1px solid {CORES_KPI["DISPONIVEIS"]["border"]} !important;
+        border-radius: 5px !important;
+        font-size: 0.72rem !important;
+        font-weight: 600 !important;
+        padding: 4px 10px !important;
+        letter-spacing: 0.5px !important;
+        width: 100% !important;
+        transition: all 0.2s !important;
+    }}
+    .kpi-btn-verde button:hover {{
+        background-color: {CORES_KPI["DISPONIVEIS"]["border"]} !important;
+        color: white !important;
+        box-shadow: 0 0 10px {CORES_KPI["DISPONIVEIS"]["shadow"]} !important;
+    }}
+
+    .kpi-btn-vermelho button {{
+        background-color: transparent !important;
+        color: {CORES_KPI["MANUTENCAO"]["text"]} !important;
+        border: 1px solid {CORES_KPI["MANUTENCAO"]["border"]} !important;
+        border-radius: 5px !important;
+        font-size: 0.72rem !important;
+        font-weight: 600 !important;
+        padding: 4px 10px !important;
+        letter-spacing: 0.5px !important;
+        width: 100% !important;
+        transition: all 0.2s !important;
+    }}
+    .kpi-btn-vermelho button:hover {{
+        background-color: {CORES_KPI["MANUTENCAO"]["border"]} !important;
+        color: white !important;
+        box-shadow: 0 0 10px {CORES_KPI["MANUTENCAO"]["shadow"]} !important;
+    }}
+
+    /* ====== MODAL / DIALOG - TEMA ESCURO FORÇADO ====== */
+    [data-testid="stDialog"],
+    [data-testid="stDialog"] > div,
+    div[role="dialog"],
+    div[role="dialog"] > div,
+    div[role="dialog"] > div > div,
+    div[role="dialog"] section,
+    div[role="dialog"] [data-testid="stVerticalBlock"] {{
+        background-color: #1e1e1e !important;
+        color: #ffffff !important;
+    }}
+    div[role="dialog"] p,
+    div[role="dialog"] span,
+    div[role="dialog"] label,
+    div[role="dialog"] div,
+    div[role="dialog"] h1,
+    div[role="dialog"] h2,
+    div[role="dialog"] h3,
+    div[role="dialog"] small {{
+        color: #ffffff !important;
+    }}
+    div[role="dialog"] input,
+    div[role="dialog"] textarea,
+    div[role="dialog"] select {{
+        background-color: #2a2a2a !important;
+        color: #ffffff !important;
+        border-color: #444 !important;
+    }}
+    div[role="dialog"] [data-baseweb="select"] > div {{
+        background-color: #2a2a2a !important;
+        color: #ffffff !important;
+        border-color: #444 !important;
+    }}
+    div[role="dialog"] [data-testid="stCaptionContainer"] * {{
+        color: #aaaaaa !important;
+    }}
+    div[role="dialog"] ::-webkit-scrollbar {{ width: 6px; }}
+    div[role="dialog"] ::-webkit-scrollbar-track {{ background: #1a1a1a; }}
+    div[role="dialog"] ::-webkit-scrollbar-thumb {{ background: #555; border-radius: 3px; }}
+    div[role="dialog"] button[aria-label="Close"],
+    div[role="dialog"] button[kind="header"] {{ color: #ffffff !important; }}
+    div[role="dialog"] hr {{ border-color: #444 !important; }}
+
     /* ====== HEADER PRINCIPAL ====== */
-    /* Cabeçalho da página */
     .main-header {{
         background-color: {CORES_HEADER["background"]};
         padding: 25px 30px;
@@ -387,8 +489,6 @@ def load_custom_css():
         justify-content: center;
     }}
 
-    /* ====== LOGO NO HEADER ====== */
-    /* Estilo da logo centralizada */
     .header-logo {{
         max-height: 120px;
         max-width: 750px;
@@ -414,8 +514,6 @@ def load_custom_css():
         letter-spacing: 1px;
     }}
 
-    /* ====== MINI PAINEL DE DISPONIBILIDADE NO HEADER ====== */
-    /* Widget de taxa de disponibilidade */
     .mini-disponibilidade {{
         background: linear-gradient(135deg, {CORES_DISPONIBILIDADE["background_start"]} 0%, {CORES_DISPONIBILIDADE["background_end"]} 100%);
         border: 1px solid {CORES_DISPONIBILIDADE["border"]};
@@ -458,7 +556,6 @@ def load_custom_css():
     }}
     
     /* ====== SIRENE GIROFLEX ANIMADA ====== */
-    /* Animação de sirene no header */
     .sirene-container {{
         position: relative;
         width: 60px;
@@ -466,7 +563,6 @@ def load_custom_css():
         flex-shrink: 0;
     }}
     
-    /* Base da sirene */
     .sirene-base {{
         position: absolute;
         bottom: 0;
@@ -478,7 +574,6 @@ def load_custom_css():
         border-radius: 0 0 8px 8px;
     }}
     
-    /* Luz da sirene */
     .sirene-light {{
         position: absolute;
         top: 5px;
@@ -492,7 +587,6 @@ def load_custom_css():
         animation: giroflex 1s infinite;
     }}
     
-    /* Brilho da luz */
     .sirene-light::before {{
         content: '';
         position: absolute;
@@ -504,7 +598,6 @@ def load_custom_css():
         border-radius: 50% 50% 20% 20%;
     }}
     
-    /* Feixe de luz */
     .sirene-beam {{
         position: absolute;
         top: 50%;
@@ -519,7 +612,6 @@ def load_custom_css():
         transform-origin: 50% 0%;
     }}
     
-    /* Animação pulsante da luz */
     @keyframes giroflex {{
         0%, 100% {{
             background: linear-gradient(180deg, {CORES_SIRENE["light_top"]} 0%, {CORES_SIRENE["light_bottom"]} 100%);
@@ -531,7 +623,6 @@ def load_custom_css():
         }}
     }}
     
-    /* Animação de rotação do feixe */
     @keyframes beam-rotate {{
         0% {{
             transform: translate(-50%, -50%) rotate(0deg);
@@ -546,7 +637,6 @@ def load_custom_css():
         }}
     }}
     
-    /* Indicador de status pulsante */
     .status-dot {{
         display: inline-block;
         width: 8px;
@@ -557,20 +647,16 @@ def load_custom_css():
         animation: pulse 2s infinite;
     }}
     
-    /* Animação de pulso */
     @keyframes pulse {{
         0%, 100% {{ opacity: 1; }}
         50% {{ opacity: 0.5; }}
     }}
     
-    /* ====== TABELAS ====== */
-    /* Estilo das tabelas de dados */
     .dataframe {{
         font-size: 0.85rem !important;
         color: {CORES_INTERFACE["texto_principal"]} !important;
     }}
     
-    /* Cabeçalho da tabela */
     .dataframe thead tr th {{
         background-color: {CORES_INTERFACE["tabela_header_bg"]} !important;
         color: {CORES_INTERFACE["texto_secundario"]} !important;
@@ -581,26 +667,20 @@ def load_custom_css():
         border-bottom: 1px solid {CORES_INTERFACE["painel_border"]} !important;
     }}
     
-    /* Linhas da tabela */
     .dataframe tbody tr td {{
         background-color: {CORES_INTERFACE["tabela_row_bg"]} !important;
         color: {CORES_INTERFACE["texto_principal"]} !important;
         border-bottom: 1px solid {CORES_INTERFACE["painel_border"]} !important;
     }}
     
-    /* Hover nas linhas */
     .dataframe tbody tr:hover td {{
         background-color: {CORES_INTERFACE["tabela_row_hover"]} !important;
     }}
     
-    /* ====== GRÁFICOS PLOTLY ====== */
-    /* Fundo transparente nos gráficos */
     .js-plotly-plot {{
         background-color: transparent !important;
     }}
     
-    /* ====== SIDEBAR ====== */
-    /* Barra lateral de filtros */
     section[data-testid="stSidebar"] {{
         background-color: {CORES_INTERFACE["sidebar_background"]} !important;
         border-right: 1px solid {CORES_INTERFACE["sidebar_border"]} !important;
@@ -632,8 +712,6 @@ def load_custom_css():
         color: #cccccc !important;
     }}
     
-    /* ====== UPLOAD DE ARQUIVO ====== */
-    /* Área de upload na sidebar */
     section[data-testid="stSidebar"] .stFileUploader label {{
         color: {CORES_INTERFACE["texto_principal"]} !important;
     }}
@@ -656,8 +734,6 @@ def load_custom_css():
         color: #000000 !important;
     }}
     
-    /* ====== BOTÕES ====== */
-    /* Estilo dos botões */
     .stButton button {{
         background-color: {CORES_INTERFACE["botao_primary"]} !important;
         color: white !important;
@@ -673,14 +749,10 @@ def load_custom_css():
         box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4) !important;
     }}
     
-    /* ====== MÉTRICAS ====== */
-    /* Esconde delta das métricas */
     div[data-testid="stMetricDelta"] {{
         display: none !important;
     }}
     
-    /* ====== TEXTOS GERAIS ====== */
-    /* Cor padrão dos textos */
     .stMarkdown, .stMarkdown p, .stMarkdown span, .stMarkdown div {{
         color: {CORES_INTERFACE["texto_principal"]} !important;
     }}
@@ -705,8 +777,6 @@ def load_custom_css():
         border-color: {CORES_INTERFACE["painel_border"]} !important;
     }}
     
-    /* ====== ALERTAS ====== */
-    /* Caixas de alerta */
     .alert-box {{
         background-color: {CORES_INTERFACE["sidebar_background"]};
         padding: 15px;
@@ -719,8 +789,6 @@ def load_custom_css():
         border-left-color: {CORES_KPI["DISPONIVEIS"]["border"]};
     }}
     
-    /* ====== DISPONIBILIDADE ====== */
-    /* Display de taxa de disponibilidade */
     .availability-display {{
         background-color: {CORES_INTERFACE["sidebar_background"]};
         padding: 30px;
@@ -746,7 +814,6 @@ def load_custom_css():
 
 # =====================================================
 # CONSTANTES E CONFIGURAÇÕES
-# Listas de status aceitos para filtros
 # =====================================================
 STATUS_OFICIAIS = [
     "MANUTENÇÃO", 
@@ -767,10 +834,9 @@ ORDEM_STATUS = STATUS_OFICIAIS + STATUS_ADICIONAIS
 
 # =====================================================
 # FUNÇÕES DE PROCESSAMENTO DE DADOS
-# Limpeza e tratamento dos dados do Excel
 # =====================================================
 def renomear_colunas_duplicadas(df):
-    """Renomeia colunas duplicadas (especialmente UF para UF_ORIGEM e UF_DESTINO)"""
+    """Renomeia colunas duplicadas"""
     cols = pd.Series(df.columns)
     for dup in cols[cols.duplicated()].unique():
         dup_indices = [i for i, x in enumerate(cols) if x == dup]
@@ -784,38 +850,25 @@ def renomear_colunas_duplicadas(df):
     df.columns = cols
     return df
 
-# =====================================================
-# FUNÇÃO COM CACHE PARA CARREGAR DADOS
-# Carrega e processa dados do Excel (com cache)
-# =====================================================
 @st.cache_data
 def load_data_from_file(file_source):
-    """
-    Carrega arquivo Excel e processa dados
-    file_source deve ser um objeto UploadedFile
-    """
+    """Carrega arquivo Excel e processa dados"""
     try:
-        # Lê Excel
         df = pd.read_excel(file_source, sheet_name="Frota Agro ")
         
         if df.empty:
             st.error("❌ A planilha está vazia!")
             return pd.DataFrame()
         
-        # Primeira linha como header
         df.columns = df.iloc[0]
         df = df[1:].reset_index(drop=True)
-        
-        # Renomeia duplicadas
         df = renomear_colunas_duplicadas(df)
         
-        # Colunas para converter em texto
         colunas_texto = [
             "STATUS", "TIPO", "POSIÇÃO ATUAL", "PLACA", 
             "MOTORISTA", "OPERAÇÃO", "UF_ORIGEM", "UF_DESTINO", "DESTINO FINAL"
         ]
         
-        # Padroniza texto: uppercase, remove espaços
         for col in colunas_texto:
             if col in df.columns:
                 df[col] = (
@@ -823,7 +876,6 @@ def load_data_from_file(file_source):
                     .replace('NAN', pd.NA).replace('', pd.NA)
                 )
         
-        # Remove linhas sem status
         df = df[df["STATUS"].notna()]
         df = df[df["STATUS"] != ""]
         
@@ -850,7 +902,6 @@ def aplicar_cor_status(row):
 
 # =====================================================
 # FUNÇÕES DE GRÁFICOS
-# Criação de visualizações com Plotly
 # =====================================================
 def criar_grafico_status(status_df):
     """Gráfico horizontal de barras por status"""
@@ -971,12 +1022,270 @@ def criar_grafico_uf_origem(uf_df):
     return fig
 
 # =====================================================
+# DIALOG - DETALHAMENTO DO KPI
+# Janela modal com todos os veículos do KPI clicado
+# =====================================================
+def _hex_to_rgba(hex_color, alpha=0.12):
+    """Converte cor hex para rgba com transparência"""
+    h = hex_color.lstrip('#')
+    r, g, b = tuple(int(h[i:i+2], 16) for i in (0, 2, 4))
+    return f"rgba({r},{g},{b},{alpha})"
+
+
+def _renderizar_cards_veiculos(df_exibir):
+    """Renderiza cada veículo como card individual maior e mais visível, estilizado pela cor do status"""
+
+    campos_info = ["POSIÇÃO ATUAL", "UF_ORIGEM", "UF_DESTINO", "DESTINO FINAL", "MOTORISTA", "OPERAÇÃO"]
+    campos_extras = [c for c in df_exibir.columns if c not in ["PLACA", "STATUS", "TIPO"] + campos_info]
+
+    cards_html = '<div style="display:flex; flex-direction:column; gap:16px;">'
+
+    for _, veiculo in df_exibir.iterrows():
+        status     = str(veiculo.get("STATUS", "")).strip()
+        placa      = str(veiculo.get("PLACA", "—")).strip()
+        tipo       = str(veiculo.get("TIPO", "—")).strip()
+        cor_status = CORES_STATUS.get(status, "#888888")
+        cor_fundo  = _hex_to_rgba(cor_status, 0.28)   # mais opaco = mais parecido com KPI
+        cor_borda  = _hex_to_rgba(cor_status, 0.80)
+        cor_info_bg = _hex_to_rgba(cor_status, 0.12)
+        cor_info_borda = _hex_to_rgba(cor_status, 0.35)
+
+        # ── Campos de informação: cada um num mini-bloco vertical ──
+        info_items = ""
+        for campo in campos_info:
+            val = veiculo.get(campo)
+            if pd.notna(val) and str(val).strip() not in ("", "NAN", "NONE"):
+                label = campo.replace("_", " ").title()
+                info_items += f"""
+                <div style="
+                    display:flex; flex-direction:column; gap:3px;
+                    min-width:150px; flex:1;
+                    padding:8px 12px;
+                    background:{cor_info_bg};
+                    border-radius:7px;
+                    border:1px solid {cor_info_borda};
+                ">
+                    <span style="
+                        color:{cor_status};
+                        font-size:0.63rem;
+                        text-transform:uppercase;
+                        letter-spacing:0.9px;
+                        font-weight:700;
+                        opacity:0.85;
+                    ">{label}</span>
+                    <span style="
+                        color:#ffffff;
+                        font-size:0.95rem;
+                        font-weight:600;
+                        line-height:1.3;
+                    ">{str(val).strip()}</span>
+                </div>"""
+
+        for campo in campos_extras:
+            val = veiculo.get(campo)
+            if pd.notna(val) and str(val).strip() not in ("", "NAN", "NONE"):
+                label = str(campo).replace("_", " ").title()
+                info_items += f"""
+                <div style="
+                    display:flex; flex-direction:column; gap:3px;
+                    min-width:150px; flex:1;
+                    padding:8px 12px;
+                    background:{cor_info_bg};
+                    border-radius:7px;
+                    border:1px solid {cor_info_borda};
+                ">
+                    <span style="
+                        color:{cor_status};
+                        font-size:0.63rem;
+                        text-transform:uppercase;
+                        letter-spacing:0.9px;
+                        font-weight:700;
+                        opacity:0.85;
+                    ">{label}</span>
+                    <span style="
+                        color:#ffffff;
+                        font-size:0.95rem;
+                        font-weight:600;
+                        line-height:1.3;
+                    ">{str(val).strip()}</span>
+                </div>"""
+
+        cards_html += f"""
+        <div style="
+            background: {cor_fundo};
+            border: 2px solid {cor_borda};
+            border-left: 6px solid {cor_status};
+            border-radius: 12px;
+            padding: 20px 22px;
+            box-shadow: 0 0 14px {_hex_to_rgba(cor_status, 0.25)}, 0 3px 12px rgba(0,0,0,0.4);
+        ">
+            <!-- ── Cabeçalho do card: placa + tipo + badge status ── -->
+            <div style="
+                display:flex;
+                align-items:center;
+                justify-content:space-between;
+                flex-wrap:wrap;
+                gap:12px;
+                margin-bottom:{'16px' if info_items else '0'};
+                padding-bottom:{'14px' if info_items else '0'};
+                border-bottom:{'1px solid ' + cor_borda if info_items else 'none'};
+            ">
+                <!-- Placa e tipo -->
+                <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+                    <span style="
+                        color:{cor_status};
+                        font-size:1.45rem;
+                        font-weight:900;
+                        letter-spacing:2.5px;
+                        font-family:monospace;
+                        text-shadow: 0 0 14px {_hex_to_rgba(cor_status, 0.7)};
+                    ">🚛 {placa}</span>
+                    <span style="
+                        color:#fff;
+                        font-size:0.88rem;
+                        font-weight:600;
+                        background:{_hex_to_rgba(cor_status, 0.25)};
+                        border:1px solid {_hex_to_rgba(cor_status, 0.5)};
+                        padding:4px 12px;
+                        border-radius:20px;
+                        letter-spacing:0.5px;
+                    ">{tipo}</span>
+                </div>
+                <!-- Badge de status -->
+                <span style="
+                    background:{_hex_to_rgba(cor_status, 0.35)};
+                    border:2px solid {cor_status};
+                    color:{cor_status};
+                    font-size:0.72rem;
+                    font-weight:800;
+                    text-transform:uppercase;
+                    letter-spacing:1.2px;
+                    padding:6px 16px;
+                    border-radius:20px;
+                    white-space:nowrap;
+                    box-shadow: 0 0 8px {_hex_to_rgba(cor_status, 0.5)};
+                ">{status}</span>
+            </div>
+            <!-- ── Grade de informações ── -->
+            {'<div style="display:flex; flex-wrap:wrap; gap:10px;">' + info_items + '</div>' if info_items else ''}
+        </div>"""
+
+    cards_html += "</div>"
+    return cards_html
+
+
+@st.dialog("🚛 DETALHAMENTO DE VEÍCULOS", width="large")
+def mostrar_detalhes_kpi(titulo, cor_hex, df_kpi):
+    """
+    Dialog modal com cards individuais por veículo, cores padronizadas por status.
+    """
+    # ── Cabeçalho ──
+    st.markdown(f"""
+    <div style="
+        display:flex; align-items:center; justify-content:space-between;
+        border-left: 4px solid {cor_hex};
+        padding: 12px 18px;
+        background: {_hex_to_rgba(cor_hex, 0.22)};
+        border-radius: 0 8px 8px 0;
+        margin-bottom: 18px;
+    ">
+        <div>
+            <div style="color:{cor_hex}; font-size:0.7rem; font-weight:700;
+                        letter-spacing:1.2px; text-transform:uppercase;">
+                CATEGORIA SELECIONADA
+            </div>
+            <div style="color:#fff; font-size:1.3rem; font-weight:800; margin-top:4px;">
+                {titulo}
+            </div>
+        </div>
+        <div style="
+            background:{cor_hex}; color:#fff;
+            font-size:1.8rem; font-weight:900;
+            padding:8px 20px; border-radius:10px;
+            min-width:65px; text-align:center;
+            box-shadow: 0 0 14px {_hex_to_rgba(cor_hex, 0.6)};
+        ">{len(df_kpi)}</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    if df_kpi.empty:
+        st.info("Nenhum veículo encontrado nesta categoria.")
+        return
+
+    # ── Mini-resumo por status (se houver múltiplos) ──
+    if "STATUS" in df_kpi.columns and df_kpi["STATUS"].nunique() > 1:
+        resumo = df_kpi["STATUS"].value_counts().reset_index()
+        resumo.columns = ["STATUS", "QTD"]
+        cols_r = st.columns(min(len(resumo), 5))
+        for i, (_, row) in enumerate(resumo.iterrows()):
+            cor = CORES_STATUS.get(row["STATUS"], "#888")
+            with cols_r[i % len(cols_r)]:
+                st.markdown(f"""
+                <div style="
+                    border:1px solid {cor}; border-radius:8px;
+                    padding:10px 12px; text-align:center;
+                    background:{_hex_to_rgba(cor, 0.22)}; margin-bottom:10px;
+                ">
+                    <div style="color:{cor}; font-size:1.5rem; font-weight:800;">{row['QTD']}</div>
+                    <div style="color:#bbb; font-size:0.62rem; text-transform:uppercase;
+                                letter-spacing:0.5px; line-height:1.4; margin-top:2px;">{row['STATUS']}</div>
+                </div>""", unsafe_allow_html=True)
+        st.divider()
+
+    # ── Busca + filtro por status ──
+    col_busca, col_filtro_status = st.columns([3, 1])
+    with col_busca:
+        busca = st.text_input(
+            "🔍 Busca rápida",
+            placeholder="Placa, motorista, posição, destino...",
+            key=f"busca_{titulo}_v2",
+            label_visibility="collapsed"
+        )
+    with col_filtro_status:
+        status_unicos = sorted(df_kpi["STATUS"].dropna().unique()) if "STATUS" in df_kpi.columns else []
+        filtro_status = st.selectbox(
+            "Status",
+            options=["TODOS"] + status_unicos,
+            key=f"sel_status_{titulo}",
+            label_visibility="collapsed"
+        )
+
+    df_exibir = df_kpi.copy()
+
+    if filtro_status != "TODOS":
+        df_exibir = df_exibir[df_exibir["STATUS"] == filtro_status]
+
+    if busca.strip():
+        mask = df_exibir.apply(
+            lambda col: col.astype(str).str.upper().str.contains(busca.strip().upper(), na=False)
+        ).any(axis=1)
+        df_exibir = df_exibir[mask]
+
+    df_exibir = df_exibir.dropna(axis=1, how='all')
+
+    total_exibindo = len(df_exibir)
+    st.caption(f"{'🔎' if busca.strip() or filtro_status != 'TODOS' else '📋'} "
+               f"Exibindo **{total_exibindo}** veículo(s)"
+               + (f" · filtro: *{busca.strip()}*" if busca.strip() else "")
+               + (f" · status: *{filtro_status}*" if filtro_status != "TODOS" else ""))
+
+    if df_exibir.empty:
+        st.warning("Nenhum veículo corresponde ao filtro.")
+        return
+
+    # ── Renderiza os cards individuais com scroll ──
+    cards = _renderizar_cards_veiculos(df_exibir)
+    st.markdown(
+        f'<div style="max-height:580px; overflow-y:auto; padding-right:6px; padding-bottom:4px;">{cards}</div>',
+        unsafe_allow_html=True
+    )
+
+
+# =====================================================
 # FUNÇÕES DE INTERFACE
-# Componentes visuais da aplicação
 # =====================================================
 def criar_header(taxa_disponibilidade=0.0):
     """Cabeçalho principal com sirene animada e taxa de disponibilidade"""
-    # Carrega a logo em base64
     logo_base64 = get_base64_image("logo_luft.png")
     
     if logo_base64:
@@ -1001,15 +1310,22 @@ def criar_header(taxa_disponibilidade=0.0):
     </div>
     """, unsafe_allow_html=True)
 
+
 def criar_kpis(df_filtrado):
     """
-    KPIs principais: Total, Em Operação, Disponíveis, Manutenção
-    Usa HTML customizado para manter cores corretas
+    KPIs clicáveis: Total, Em Operação, Disponíveis, Manutenção.
+    Ao clicar no botão de cada KPI, abre dialog com todos os veículos da categoria.
     """
     total = len(df_filtrado)
-    em_operacao = len(df_filtrado[df_filtrado["STATUS"].isin(["CARREGADO", "RETORNANDO DISPONÍVEIS"])])
-    disponiveis = len(df_filtrado[df_filtrado["STATUS"].isin(["DISPONÍVEIS TRIPULADO", "DISPONÍVEIS NÃO TRIPULADO"])])
-    manutencao = len(df_filtrado[df_filtrado["STATUS"] == "MANUTENÇÃO"])
+    
+    df_total       = df_filtrado.copy()
+    df_operacao    = df_filtrado[df_filtrado["STATUS"].isin(["CARREGADO", "RETORNANDO DISPONÍVEIS"])].copy()
+    df_disponiveis = df_filtrado[df_filtrado["STATUS"].isin(["DISPONÍVEIS TRIPULADO", "DISPONÍVEIS NÃO TRIPULADO"])].copy()
+    df_manutencao  = df_filtrado[df_filtrado["STATUS"] == "MANUTENÇÃO"].copy()
+
+    em_operacao = len(df_operacao)
+    disponiveis = len(df_disponiveis)
+    manutencao  = len(df_manutencao)
 
     col1, col2, col3, col4 = st.columns(4)
 
@@ -1020,6 +1336,10 @@ def criar_kpis(df_filtrado):
             <div class="kpi-value">{total}</div>
         </div>
         """, unsafe_allow_html=True)
+        st.markdown('<div class="kpi-btn-azul">', unsafe_allow_html=True)
+        if st.button("🔍 VER TODOS OS VEÍCULOS", key="btn_kpi_total", use_container_width=True):
+            mostrar_detalhes_kpi("TOTAL DE VEÍCULOS", CORES_KPI["TOTAL"]["border"], df_total)
+        st.markdown('</div>', unsafe_allow_html=True)
 
     with col2:
         st.markdown(f"""
@@ -1028,6 +1348,10 @@ def criar_kpis(df_filtrado):
             <div class="kpi-value">{em_operacao}</div>
         </div>
         """, unsafe_allow_html=True)
+        st.markdown('<div class="kpi-btn-laranja">', unsafe_allow_html=True)
+        if st.button("🔍 VER EM OPERAÇÃO", key="btn_kpi_operacao", use_container_width=True):
+            mostrar_detalhes_kpi("EM OPERAÇÃO", CORES_KPI["OPERACAO"]["border"], df_operacao)
+        st.markdown('</div>', unsafe_allow_html=True)
 
     with col3:
         st.markdown(f"""
@@ -1036,6 +1360,10 @@ def criar_kpis(df_filtrado):
             <div class="kpi-value">{disponiveis}</div>
         </div>
         """, unsafe_allow_html=True)
+        st.markdown('<div class="kpi-btn-verde">', unsafe_allow_html=True)
+        if st.button("🔍 VER DISPONÍVEIS", key="btn_kpi_disponiveis", use_container_width=True):
+            mostrar_detalhes_kpi("DISPONÍVEIS", CORES_KPI["DISPONIVEIS"]["border"], df_disponiveis)
+        st.markdown('</div>', unsafe_allow_html=True)
 
     with col4:
         st.markdown(f"""
@@ -1044,8 +1372,13 @@ def criar_kpis(df_filtrado):
             <div class="kpi-value">{manutencao}</div>
         </div>
         """, unsafe_allow_html=True)
+        st.markdown('<div class="kpi-btn-vermelho">', unsafe_allow_html=True)
+        if st.button("🔍 VER EM MANUTENÇÃO", key="btn_kpi_manutencao", use_container_width=True):
+            mostrar_detalhes_kpi("MANUTENÇÃO", CORES_KPI["MANUTENCAO"]["border"], df_manutencao)
+        st.markdown('</div>', unsafe_allow_html=True)
 
     return em_operacao, disponiveis, manutencao
+
 
 def criar_sidebar(main_loading_placeholder):
     """Barra lateral com upload de arquivo e filtros"""
@@ -1053,7 +1386,6 @@ def criar_sidebar(main_loading_placeholder):
         st.header("🎛️ FILTROS OPERACIONAIS")
         st.divider()
         
-        # ===== UPLOAD MANUAL OBRIGATÓRIO =====
         st.subheader("📁 CARREGAR ARQUIVO")
         
         uploaded_file = st.file_uploader(
@@ -1064,7 +1396,6 @@ def criar_sidebar(main_loading_placeholder):
         
         df_base = pd.DataFrame()
         
-        # Só processa se houver arquivo
         if uploaded_file is not None:
             show_loading_screen(main_loading_placeholder)
             df_base = load_data_from_file(uploaded_file)
@@ -1075,12 +1406,10 @@ def criar_sidebar(main_loading_placeholder):
         
         st.divider()
         
-        # Se não há dados, retorna vazios
         if df_base.empty:
             st.info("⬆️ Faça upload de um arquivo Excel para visualizar os dados.")
             return pd.DataFrame(), [], [], [], []
         
-        # Checkbox para incluir todos status
         incluir_todos_status = st.checkbox("📋 Incluir TODOS os STATUS", value=False)
         
         if incluir_todos_status:
@@ -1088,69 +1417,58 @@ def criar_sidebar(main_loading_placeholder):
         else:
             STATUS_PARA_USAR = STATUS_OFICIAIS
         
-        # Filtra base pelos status permitidos
         df_base_filtrado = df_base[df_base["STATUS"].isin(STATUS_PARA_USAR)].copy()
         
-        # Filtro de Status
         status_disponiveis = sorted([s for s in df_base_filtrado["STATUS"].unique() if s in STATUS_PARA_USAR])
         status_sel = st.multiselect("📊 STATUS", status_disponiveis, default=status_disponiveis)
         
-        # Filtro de Tipo
         tipos_disponiveis = sorted([t for t in df_base_filtrado["TIPO"].unique() if pd.notna(t) and t != ""])
         tipo_sel = st.multiselect("🚛 TIPO DE VEÍCULO", tipos_disponiveis, default=tipos_disponiveis)
         
-        # Filtro de Posição
         posicoes_disponiveis = sorted([p for p in df_base_filtrado["POSIÇÃO ATUAL"].unique() if pd.notna(p) and p != ""])
         pos_sel = st.multiselect("📍 POSIÇÃO ATUAL", posicoes_disponiveis, default=posicoes_disponiveis)
         
-        # Filtro de UF
         if "UF_ORIGEM" in df_base_filtrado.columns:
             ufs_disponiveis = sorted([u for u in df_base_filtrado["UF_ORIGEM"].unique() if pd.notna(u) and u != ""])
             uf_sel = st.multiselect("🗺️ UF DE ORIGEM", ufs_disponiveis, default=ufs_disponiveis)
         else:
             uf_sel = []
         
-        # Botão atualizar manual
         if st.button("🔄 ATUALIZAR DADOS AGORA", use_container_width=True):
             st.cache_data.clear()
             st.rerun()
         
         return df_base_filtrado, status_sel, tipo_sel, pos_sel, uf_sel
 
+
 def criar_painel_status(status_df):
-    """Painel com gráfico de distribuição por status"""
     with st.container(border=True):
         st.markdown('<div class="card-title">📊 STATUS DA FROTA</div>', unsafe_allow_html=True)
         fig_status = criar_grafico_status(status_df)
         st.plotly_chart(fig_status, use_container_width=True, config={'displayModeBar': False})
 
 def criar_painel_uf(uf_df):
-    """Painel com gráfico de distribuição por UF de origem"""
     with st.container(border=True):
         st.markdown('<div class="card-title">🗺️ DISTRIBUIÇÃO POR UF (ORIGEM)</div>', unsafe_allow_html=True)
         fig_uf = criar_grafico_uf_origem(uf_df)
         st.plotly_chart(fig_uf, use_container_width=True, config={'displayModeBar': False})
 
 def criar_painel_tipo(tipo_df):
-    """Painel com gráfico de distribuição por tipo de veículo"""
     with st.container(border=True):
         st.markdown('<div class="card-title">🚛 TIPO DE VEÍCULO</div>', unsafe_allow_html=True)
         fig_tipo = criar_grafico_tipo(tipo_df)
         st.plotly_chart(fig_tipo, use_container_width=True, config={'displayModeBar': False})
 
 def criar_painel_posicao(posicao_df):
-    """Painel com gráfico pizza de posições atuais"""
     with st.container(border=True):
         st.markdown('<div class="card-title">📍 POSIÇÃO ATUAL</div>', unsafe_allow_html=True)
         fig_pos = criar_grafico_posicao(posicao_df)
         st.plotly_chart(fig_pos, use_container_width=True, config={'displayModeBar': False})
 
 def criar_tabela_detalhada(df_filtrado):
-    """Tabela detalhada com todos os veículos filtrados"""
     with st.container(border=True):
         st.markdown('<div class="card-title">📋 DETALHAMENTO COMPLETO DA FROTA</div>', unsafe_allow_html=True)
         
-        # Seleciona colunas para exibir
         colunas_exibir = ["PLACA", "STATUS", "TIPO", "POSIÇÃO ATUAL"]
         
         if "UF_ORIGEM" in df_filtrado.columns:
@@ -1164,7 +1482,6 @@ def criar_tabela_detalhada(df_filtrado):
         
         df_display = df_filtrado[colunas_exibir].copy()
         
-        # Tabela com cores por status
         st.dataframe(
             df_display.style.apply(aplicar_cor_status, axis=1),
             hide_index=True,
@@ -1172,21 +1489,17 @@ def criar_tabela_detalhada(df_filtrado):
             height=400
         )
 
+
 # =====================================================
 # FUNÇÃO PRINCIPAL
-# Orquestra toda a aplicação
 # =====================================================
 def main():
-    # Carrega CSS
     load_custom_css()
     
-    # Placeholder global para tela de loading
     loading_placeholder = st.empty()
     
-    # Cria sidebar e processa upload
     df_base_filtrado, status_sel, tipo_sel, pos_sel, uf_sel = criar_sidebar(loading_placeholder)
     
-    # Se não houver dados, para execução
     if df_base_filtrado.empty:
         st.markdown("""
         <style>
@@ -1226,7 +1539,6 @@ def main():
         """, unsafe_allow_html=True)
         st.stop()
     
-    # Aplica filtros selecionados
     filtro_aplicado = (
         (df_base_filtrado["STATUS"].isin(status_sel)) &
         (df_base_filtrado["TIPO"].isin(tipo_sel)) &
@@ -1238,18 +1550,14 @@ def main():
     
     df_filtrado = df_base_filtrado[filtro_aplicado].copy()
     
-    # Calcula taxa de disponibilidade
     manutencao_count = len(df_filtrado[df_filtrado["STATUS"] == "MANUTENÇÃO"])
     taxa_disponibilidade = ((len(df_filtrado) - manutencao_count) / len(df_filtrado) * 100) if len(df_filtrado) > 0 else 0.0
 
-    # Cria header
     criar_header(taxa_disponibilidade)
     
-    # Cria KPIs
     em_operacao, disponiveis, manutencao = criar_kpis(df_filtrado)
     st.markdown("<br>", unsafe_allow_html=True)
     
-    # Prepara DataFrames para gráficos
     status_counts = df_filtrado["STATUS"].value_counts()
     status_df = pd.DataFrame({
         "STATUS": [s for s in ORDEM_STATUS if s in status_counts.index],
@@ -1270,8 +1578,6 @@ def main():
     else:
         uf_origem_df = pd.DataFrame()
     
-    # ========== PRIMEIRA LINHA DE PAINÉIS ==========
-    # Status e Posição
     col_graf1, col_graf2 = st.columns(2)
     
     with col_graf1:
@@ -1280,8 +1586,6 @@ def main():
     with col_graf2:
         criar_painel_posicao(posicao_df)
     
-    # ========== SEGUNDA LINHA DE PAINÉIS ==========
-    # Tipo e UF
     st.markdown("<br>", unsafe_allow_html=True)
     col_graf4, col_graf5 = st.columns(2)
     
@@ -1292,13 +1596,9 @@ def main():
         if not uf_origem_df.empty:
             criar_painel_uf(uf_origem_df)
     
-    # Tabela detalhada
     st.markdown("<br>", unsafe_allow_html=True)
     criar_tabela_detalhada(df_filtrado)
 
-# =====================================================
-# EXECUÇÃO
-# Ponto de entrada do programa
-# =====================================================
+
 if __name__ == "__main__":
     main()
