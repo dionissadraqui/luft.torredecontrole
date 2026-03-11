@@ -580,11 +580,20 @@ def load_data_from_file(file_source):
 
 def aplicar_cor_status(row):
     status = row["STATUS"]
-    if status == "MANUTENÇÃO":
-        return ['background-color: #3d1f1f; color: #ff5722'] * len(row)
-    if "DISPONÍVEL" in status:
-        return ['background-color: #1f3d1f; color: #4caf50'] * len(row)
-    return ['background-color: #252525; color: #ffffff'] * len(row)
+    # Mapa de status → (cor de fundo, cor do texto)
+    estilos = {
+        "MANUTENÇÃO":                  ("#3d1f1f", "#ff3c00"),
+        "DISPONÍVEIS NÃO TRIPULADO":   ("#1a2e1a", "#4caf50"),
+        "DISPONÍVEIS TRIPULADO":       ("#1a2e1a", "#0aec0a"),
+        "CARREGADO":                   ("#2e2010", "#ff9800"),
+        "RETORNANDO DISPONÍVEIS":      ("#101a2e", "#2196f3"),
+        "APOIO FILIAL":                ("#2e2e2e", "#ffffff"),
+        "INDISPONÍVEIS":               ("#1e2025", "#94a3b8"),
+        "FORA DE OPERAÇÃO":            ("#1a1c1f", "#64748b"),
+        "RETORNANDO INDISPONÍVEIS":    ("#1e2025", "#cbd5e1"),
+    }
+    bg, fg = estilos.get(status, ("#252525", "#ffffff"))
+    return [f'background-color: {bg}; color: {fg}'] * len(row)
 
 # =====================================================
 # GRÁFICOS
