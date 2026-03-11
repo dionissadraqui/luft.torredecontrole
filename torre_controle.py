@@ -149,7 +149,7 @@ def load_custom_css():
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6) !important;
     }}
     .card-title {{
-        font-weight: 800; font-size: 1rem; color: {CORES_INTERFACE["texto_principal"]} !important;
+        font-weight: 800; font-size: 1.25rem; color: {CORES_INTERFACE["texto_principal"]} !important;
         text-transform: uppercase; margin-bottom: 20px; letter-spacing: 1.5px;
         display: flex; align-items: center; gap: 10px;
         text-shadow: 0 0 10px rgba(255,255,255,0.12);
@@ -159,7 +159,7 @@ def load_custom_css():
         padding: 25px 15px 15px 15px; text-align: center; width: 100%; box-sizing: border-box;
     }}
     .kpi-card .kpi-label {{
-        font-size: 0.88rem; font-weight: 800; text-transform: uppercase;
+        font-size: 1.15rem; font-weight: 800; text-transform: uppercase;
         letter-spacing: 1.8px; margin-bottom: 10px;
     }}
     .kpi-card .kpi-value {{
@@ -218,20 +218,11 @@ def load_custom_css():
         letter-spacing: 0.8px !important; width: 100% !important; transition: all 0.2s !important;
     }}
     .kpi-btn-vermelho button:hover {{ background-color: {CORES_KPI["MANUTENCAO"]["border"]} !important; color: white !important; box-shadow: 0 0 14px {CORES_KPI["MANUTENCAO"]["shadow"]} !important; }}
-    /* ====== DIALOG — centralizado, responsivo, quase tela cheia ====== */
-    /* Overlay centralizado */
-    [data-testid="stDialog"] {{
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-    }}
-    /* Container do dialog */
-    [data-testid="stDialog"] > div,
+    /* ====== DIALOG — estilos base ====== */
     div[role="dialog"] > div {{
-        max-width: 96vw !important;
-        width: 96vw !important;
-        max-height: 92vh !important;
-        margin: auto !important;
+        max-width: 92vw !important;
+        width: 92vw !important;
+        max-height: 90vh !important;
         padding: clamp(16px, 3vw, 36px) clamp(14px, 3vw, 40px) !important;
         border-radius: 14px !important;
         overflow-y: auto !important;
@@ -423,6 +414,19 @@ def load_custom_css():
     .dataframe tbody tr td {{ background-color: {CORES_INTERFACE["tabela_row_bg"]} !important; color: {CORES_INTERFACE["texto_principal"]} !important; border-bottom: 1px solid {CORES_INTERFACE["painel_border"]} !important; }}
     .dataframe tbody tr:hover td {{ background-color: {CORES_INTERFACE["tabela_row_hover"]} !important; }}
     .js-plotly-plot {{ background-color: transparent !important; }}
+    /* ====== TOOLTIP — fundo escuro, texto branco ====== */
+    div[data-testid="stTooltipContent"],
+    div[data-testid="stTooltipContent"] p,
+    [data-testid="stTooltipContent"] * {{
+        background-color: #1a1a1a !important;
+        color: #ffffff !important;
+    }}
+    [class^="stTooltipContent"],
+    [class*=" stTooltipContent"] {{
+        background-color: #1a1a1a !important;
+        color: #ffffff !important;
+        border: 1px solid #555 !important;
+    }}
     section[data-testid="stSidebar"] {{ background-color: {CORES_INTERFACE["sidebar_background"]} !important; border-right: 1px solid {CORES_INTERFACE["sidebar_border"]} !important; }}
     section[data-testid="stSidebar"] * {{ color: {CORES_INTERFACE["texto_principal"]} !important; }}
     section[data-testid="stSidebar"] .stMarkdown, section[data-testid="stSidebar"] label, section[data-testid="stSidebar"] p, section[data-testid="stSidebar"] span, section[data-testid="stSidebar"] div {{ color: {CORES_INTERFACE["texto_principal"]} !important; }}
@@ -443,6 +447,27 @@ def load_custom_css():
     .availability-display {{ background-color: {CORES_INTERFACE["sidebar_background"]}; padding: 30px; border-radius: 8px; text-align: center; }}
     .availability-display h2 {{ color: {CORES_KPI["DISPONIVEIS"]["text"]} !important; font-size: 3.5rem !important; font-weight: 700 !important; margin: 0 !important; }}
     .availability-display p {{ color: {CORES_INTERFACE["texto_secundario"]} !important; font-size: 0.9rem !important; text-transform: uppercase !important; margin-top: 10px !important; }}
+    .btn-fullscreen button {{
+        background-color: transparent !important;
+        color: rgba(255,255,255,0.45) !important;
+        border: 1px solid rgba(255,255,255,0.18) !important;
+        border-radius: 6px !important;
+        font-size: 1rem !important;
+        font-weight: 400 !important;
+        padding: 2px 8px !important;
+        line-height: 1.2 !important;
+        min-height: 0 !important;
+        height: 28px !important;
+        width: auto !important;
+        transition: all 0.2s !important;
+        box-shadow: none !important;
+    }}
+    .btn-fullscreen button:hover {{
+        color: #ffffff !important;
+        border-color: rgba(255,255,255,0.55) !important;
+        background-color: rgba(255,255,255,0.08) !important;
+        box-shadow: none !important;
+    }}
     </style>
     """, unsafe_allow_html=True)
 
@@ -511,6 +536,8 @@ def load_data_from_file(file_source):
         df = renomear_colunas_duplicadas(df)
 
         # ── Limpa colunas de texto ──
+        # FIX: .str.replace(r'\s+', ' ', regex=True) normaliza espaços internos duplos/triplos
+        # que causavam duplicação no gráfico de Posição Atual (ex: "LUFT  BARUERI" ≠ "LUFT BARUERI")
         colunas_texto = ["STATUS", "TIPO", "POSIÇÃO ATUAL", "PLACA",
                          "MOTORISTA", "OPERAÇÃO", "UF_ORIGEM", "UF_DESTINO", "DESTINO FINAL"]
         for col in colunas_texto:
@@ -519,6 +546,7 @@ def load_data_from_file(file_source):
                     df[col].astype(str)
                     .str.strip()
                     .str.upper()
+                    .str.replace(r'\s+', ' ', regex=True)  # ← normaliza espaços internos
                 )
                 # Substitui strings vazias e 'nan'/'none' por NaN real
                 df[col] = df[col].where(
@@ -573,13 +601,14 @@ def criar_grafico_status(status_df):
             hovertemplate='<b>%{y}</b><br>Quantidade: %{x}<extra></extra>', showlegend=False
         ))
     fig.update_layout(
+        hoverlabel=dict(bgcolor='#1e1e1e', bordercolor='#555', font=dict(size=18, color='#ffffff', family='Arial Black'), namelength=-1),
         height=320, showlegend=False, margin=dict(l=0, r=50, t=10, b=0),
         paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)',
-        font=dict(color='#f5f5f5', size=13),
+        font=dict(color='#f5f5f5', size=16),
         xaxis=dict(showgrid=True, gridcolor=CORES_INTERFACE["grid"], showline=False, zeroline=False,
-                   color=CORES_INTERFACE["texto_secundario"], tickfont=dict(size=13, color=CORES_INTERFACE["texto_secundario"])),
+                   color=CORES_INTERFACE["texto_secundario"], tickfont=dict(size=16, color=CORES_INTERFACE["texto_secundario"])),
         yaxis=dict(showgrid=False, showline=False, color='#f5f5f5',
-                   tickfont=dict(size=14, color='#f5f5f5', family='Arial Black'))
+                   tickfont=dict(size=17, color='#f5f5f5', family='Arial Black'))
     )
     return fig
 
@@ -597,32 +626,50 @@ def criar_grafico_tipo(tipo_df):
     valor_max = tipo_df["QUANTIDADE"].max() if not tipo_df.empty else 10
     altura_minima = max(320, valor_max * 4 + 80)
     fig.update_layout(
+        hoverlabel=dict(bgcolor='#1e1e1e', bordercolor='#555', font=dict(size=18, color='#ffffff', family='Arial Black'), namelength=-1),
         height=altura_minima, showlegend=False, margin=dict(l=0, r=0, t=30, b=0),
         paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)',
-        font=dict(color='#f5f5f5', size=13),
+        font=dict(color='#f5f5f5', size=16),
         xaxis=dict(showgrid=False, showline=False, color=CORES_INTERFACE["texto_secundario"],
-                   tickangle=0, tickfont=dict(size=13, color=CORES_INTERFACE["texto_secundario"], family='Arial Black')),
+                   tickangle=0, tickfont=dict(size=16, color=CORES_INTERFACE["texto_secundario"], family='Arial Black')),
         yaxis=dict(showgrid=True, gridcolor=CORES_INTERFACE["grid"], showline=False, zeroline=False,
                    color=CORES_INTERFACE["texto_secundario"], range=[0, valor_max * 1.18],
-                   tickfont=dict(size=13, color=CORES_INTERFACE["texto_secundario"]))
+                   tickfont=dict(size=16, color=CORES_INTERFACE["texto_secundario"]))
     )
     return fig
 
-def criar_grafico_posicao(posicao_df):
+def criar_grafico_posicao(posicao_df, fullscreen=False):
+    df_plot = posicao_df if fullscreen else posicao_df.head(10)
+    n = len(df_plot)
+    cores = [CORES_POSICAO[i % len(CORES_POSICAO)] for i in range(n)]
     fig = go.Figure(data=[go.Pie(
-        labels=posicao_df.head(10)["POSIÇÃO ATUAL"], values=posicao_df.head(10)["QUANTIDADE"],
+        labels=df_plot["POSIÇÃO ATUAL"], values=df_plot["QUANTIDADE"],
         hole=0.62,
-        marker=dict(colors=CORES_POSICAO, line=dict(color='#0a0a0a', width=2)),
-        textfont=dict(color='#ffffff', size=15, family='Arial Black'), textinfo='value',
+        marker=dict(colors=cores, line=dict(color='#0a0a0a', width=2)),
+        textfont=dict(color='#ffffff', size=18, family='Arial Black'), textinfo='value',
         hovertemplate='<b>%{label}</b><br>Quantidade: %{value}<br>%{percent}<extra></extra>'
     )])
-    fig.update_layout(
-        height=320, margin=dict(l=0, r=0, t=0, b=0),
-        paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)',
-        showlegend=True,
-        legend=dict(orientation="v", yanchor="middle", y=0.5, xanchor="left", x=1.02,
-                    font=dict(color='#f5f5f5', size=12, family='Arial'), bgcolor='rgba(0,0,0,0)')
-    )
+    if fullscreen:
+        fig.update_layout(
+            hoverlabel=dict(bgcolor='#1e1e1e', bordercolor='#555', font=dict(size=18, color='#ffffff', family='Arial Black'), namelength=-1),
+            height=720, margin=dict(l=10, r=220, t=20, b=20),
+            paper_bgcolor='#141414', plot_bgcolor='#141414',
+            showlegend=True,
+            legend=dict(
+                orientation="v", yanchor="middle", y=0.5, xanchor="left", x=1.01,
+                font=dict(color='#f5f5f5', size=16, family='Arial Black'),
+                bgcolor='rgba(0,0,0,0)'
+            )
+        )
+    else:
+        fig.update_layout(
+            hoverlabel=dict(bgcolor='#1e1e1e', bordercolor='#555', font=dict(size=18, color='#ffffff', family='Arial Black'), namelength=-1),
+            height=320, margin=dict(l=0, r=0, t=0, b=0),
+            paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)',
+            showlegend=True,
+            legend=dict(orientation="v", yanchor="middle", y=0.5, xanchor="left", x=1.02,
+                        font=dict(color='#f5f5f5', size=18, family='Arial Black'), bgcolor='rgba(0,0,0,0)')
+        )
     return fig
 
 def criar_grafico_uf_origem(uf_df):
@@ -639,14 +686,15 @@ def criar_grafico_uf_origem(uf_df):
     valor_max = uf_df["QUANTIDADE"].max() if not uf_df.empty else 10
     altura_minima = max(320, valor_max * 4 + 80)
     fig.update_layout(
+        hoverlabel=dict(bgcolor='#1e1e1e', bordercolor='#555', font=dict(size=18, color='#ffffff', family='Arial Black'), namelength=-1),
         height=altura_minima, showlegend=False, margin=dict(l=0, r=0, t=30, b=0),
         paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)',
-        font=dict(color='#f5f5f5', size=13),
+        font=dict(color='#f5f5f5', size=16),
         xaxis=dict(showgrid=False, showline=False, color=CORES_INTERFACE["texto_secundario"],
-                   tickangle=0, tickfont=dict(size=14, color=CORES_INTERFACE["texto_secundario"], family='Arial Black')),
+                   tickangle=0, tickfont=dict(size=17, color=CORES_INTERFACE["texto_secundario"], family='Arial Black')),
         yaxis=dict(showgrid=True, gridcolor=CORES_INTERFACE["grid"], showline=False, zeroline=False,
                    color=CORES_INTERFACE["texto_secundario"], range=[0, valor_max * 1.18],
-                   tickfont=dict(size=13, color=CORES_INTERFACE["texto_secundario"]))
+                   tickfont=dict(size=16, color=CORES_INTERFACE["texto_secundario"]))
     )
     return fig
 
@@ -765,14 +813,21 @@ def _html_card_completo(veiculo):
 # BUG FIX: usa session_state para persistir qual dialog está aberto
 # e qual veículo foi selecionado, evitando o fechamento ao st.rerun()
 # =====================================================
-@st.dialog("🚛 DETALHAMENTO DE VEÍCULOS", width="large")
 def mostrar_detalhes_kpi(titulo, cor_hex, df_kpi):
     """
-    Dialog com DOIS NÍVEIS.
-    O estado de qual veículo está selecionado (nível 2) é lido direto
-    do session_state que foi salvo ANTES do rerun, garantindo que
-    o dialog reabra já no nível correto.
+    Painel FULLSCREEN com DOIS NÍVEIS (renderizado na página, não como dialog).
     """
+    # ── CSS fullscreen: esconde sidebar, expande o conteúdo ──
+    st.markdown("""
+    <style>
+    section[data-testid="stSidebar"] { display: none !important; }
+    .main .block-container {
+        padding: 1rem 1.5rem !important;
+        max-width: 100% !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
     key_sel    = f"_kpi_sel_{titulo}"
     key_busca  = f"_kpi_busca_{titulo}"
     key_fsts   = f"_kpi_fsts_{titulo}"
@@ -880,6 +935,9 @@ def mostrar_detalhes_kpi(titulo, cor_hex, df_kpi):
         if st.button("✕  FECHAR", key=f"btn_fechar_{titulo}", use_container_width=True, type="secondary"):
             st.session_state[key_aberto] = False
             st.session_state[key_sel]    = None
+            # Limpa todas as chaves de KPI abertas
+            for k in [k for k in st.session_state if k.startswith("_kpi_aberto_") or k.startswith("_kpi_sel_")]:
+                st.session_state[k] = False if k.startswith("_kpi_aberto_") else None
             st.rerun()
 
     st.markdown(f"""
@@ -944,13 +1002,12 @@ def mostrar_detalhes_kpi(titulo, cor_hex, df_kpi):
     df_exibir = df_exibir.reset_index(drop=True)
     total_exibindo = len(df_exibir)
 
-    st.caption(
-        f"{'🔎' if busca.strip() or filtro_status != 'TODOS' else '📋'} "
-        f"Exibindo **{total_exibindo}** veículo(s)"
-        + (f" · filtro: *{busca.strip()}*" if busca.strip() else "")
-        + (f" · status: *{filtro_status}*" if filtro_status != "TODOS" else "")
-        + "  —  Clique em **▶ ABRIR** para ver os detalhes completos"
-    )
+    icone = '🔎' if busca.strip() or filtro_status != 'TODOS' else '📋'
+    filtro_txt = (f" · filtro: *{busca.strip()}*" if busca.strip() else "")
+    status_txt = (f" · status: *{filtro_status}*" if filtro_status != "TODOS" else "")
+    st.markdown(f"""<span style="font-size:1rem; color:#aaaaaa;">
+    {icone} Exibindo **{total_exibindo}** veículo(s){filtro_txt}{status_txt}  —  Clique em **▶ ABRIR** para ver os detalhes completos
+    </span>""", unsafe_allow_html=True)
 
     if df_exibir.empty:
         st.warning("Nenhum veículo corresponde ao filtro.")
@@ -1034,6 +1091,8 @@ def criar_kpis(df_filtrado):
         </div>
         """, unsafe_allow_html=True)
         if st.button("🔍 VER TODOS OS VEÍCULOS", key="btn_kpi_total", use_container_width=True):
+            for k in [k for k in st.session_state if k.startswith("_kpi_aberto_") or k.startswith("_kpi_sel_")]:
+                st.session_state[k] = False if k.startswith("_kpi_aberto_") else None
             st.session_state["_kpi_aberto_TOTAL DE VEÍCULOS"] = True
             st.session_state["_kpi_sel_TOTAL DE VEÍCULOS"]    = None
             st.rerun()
@@ -1046,6 +1105,8 @@ def criar_kpis(df_filtrado):
         </div>
         """, unsafe_allow_html=True)
         if st.button("🔍 VER EM OPERAÇÃO", key="btn_kpi_operacao", use_container_width=True):
+            for k in [k for k in st.session_state if k.startswith("_kpi_aberto_") or k.startswith("_kpi_sel_")]:
+                st.session_state[k] = False if k.startswith("_kpi_aberto_") else None
             st.session_state["_kpi_aberto_EM OPERAÇÃO"] = True
             st.session_state["_kpi_sel_EM OPERAÇÃO"]    = None
             st.rerun()
@@ -1058,6 +1119,8 @@ def criar_kpis(df_filtrado):
         </div>
         """, unsafe_allow_html=True)
         if st.button("🔍 VER DISPONÍVEIS", key="btn_kpi_disponiveis", use_container_width=True):
+            for k in [k for k in st.session_state if k.startswith("_kpi_aberto_") or k.startswith("_kpi_sel_")]:
+                st.session_state[k] = False if k.startswith("_kpi_aberto_") else None
             st.session_state["_kpi_aberto_DISPONÍVEIS"] = True
             st.session_state["_kpi_sel_DISPONÍVEIS"]    = None
             st.rerun()
@@ -1070,6 +1133,8 @@ def criar_kpis(df_filtrado):
         </div>
         """, unsafe_allow_html=True)
         if st.button("🔍 VER EM MANUTENÇÃO", key="btn_kpi_manutencao", use_container_width=True):
+            for k in [k for k in st.session_state if k.startswith("_kpi_aberto_") or k.startswith("_kpi_sel_")]:
+                st.session_state[k] = False if k.startswith("_kpi_aberto_") else None
             st.session_state["_kpi_aberto_MANUTENÇÃO"] = True
             st.session_state["_kpi_sel_MANUTENÇÃO"]    = None
             st.rerun()
@@ -1131,23 +1196,100 @@ def criar_sidebar(main_loading_placeholder):
 
 def criar_painel_status(status_df):
     with st.container(border=True):
-        st.markdown('<div class="card-title">📊 STATUS DA FROTA</div>', unsafe_allow_html=True)
+        col_t, col_b = st.columns([11, 1])
+        with col_t:
+            st.markdown('<div class="card-title">📊 STATUS DA FROTA</div>', unsafe_allow_html=True)
+        with col_b:
+            st.markdown('<div class="btn-fullscreen">', unsafe_allow_html=True)
+            if st.button("⛶", key="fs_btn_status"):
+                st.session_state["_grafico_fs"] = "status"
+                st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
         st.plotly_chart(criar_grafico_status(status_df), use_container_width=True, config={'displayModeBar': False})
 
 def criar_painel_uf(uf_df):
     with st.container(border=True):
-        st.markdown('<div class="card-title">🗺️ DISTRIBUIÇÃO POR UF (ORIGEM)</div>', unsafe_allow_html=True)
+        col_t, col_b = st.columns([11, 1])
+        with col_t:
+            st.markdown('<div class="card-title">🗺️ DISTRIBUIÇÃO POR UF (ORIGEM)</div>', unsafe_allow_html=True)
+        with col_b:
+            st.markdown('<div class="btn-fullscreen">', unsafe_allow_html=True)
+            if st.button("⛶", key="fs_btn_uf"):
+                st.session_state["_grafico_fs"] = "uf"
+                st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
         st.plotly_chart(criar_grafico_uf_origem(uf_df), use_container_width=True, config={'displayModeBar': False})
 
 def criar_painel_tipo(tipo_df):
     with st.container(border=True):
-        st.markdown('<div class="card-title">🚛 TIPO DE VEÍCULO</div>', unsafe_allow_html=True)
+        col_t, col_b = st.columns([11, 1])
+        with col_t:
+            st.markdown('<div class="card-title">🚛 TIPO DE VEÍCULO</div>', unsafe_allow_html=True)
+        with col_b:
+            st.markdown('<div class="btn-fullscreen">', unsafe_allow_html=True)
+            if st.button("⛶", key="fs_btn_tipo"):
+                st.session_state["_grafico_fs"] = "tipo"
+                st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
         st.plotly_chart(criar_grafico_tipo(tipo_df), use_container_width=True, config={'displayModeBar': False})
 
 def criar_painel_posicao(posicao_df):
     with st.container(border=True):
-        st.markdown('<div class="card-title">📍 POSIÇÃO ATUAL</div>', unsafe_allow_html=True)
+        col_t, col_b = st.columns([11, 1])
+        with col_t:
+            st.markdown('<div class="card-title">📍 POSIÇÃO ATUAL</div>', unsafe_allow_html=True)
+        with col_b:
+            st.markdown('<div class="btn-fullscreen">', unsafe_allow_html=True)
+            if st.button("⛶", key="fs_btn_posicao"):
+                st.session_state["_grafico_fs"] = "posicao"
+                st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
         st.plotly_chart(criar_grafico_posicao(posicao_df), use_container_width=True, config={'displayModeBar': False})
+
+
+def mostrar_grafico_fullscreen(grafico_id, status_df, tipo_df, posicao_df, uf_origem_df):
+    """Renderiza o gráfico escolhido em modo tela cheia com botão fechar."""
+    titulos = {
+        "status":  "📊 STATUS DA FROTA",
+        "posicao": "📍 POSIÇÃO ATUAL",
+        "tipo":    "🚛 TIPO DE VEÍCULO",
+        "uf":      "🗺️ DISTRIBUIÇÃO POR UF (ORIGEM)",
+    }
+    titulo = titulos.get(grafico_id, "")
+
+    st.markdown(f"""
+    <style>
+    section[data-testid="stSidebar"] {{ display: none !important; }}
+    .stApp {{ background: #141414 !important; }}
+    .main .block-container {{ padding: 1rem 1.5rem !important; max-width: 100% !important; background: #141414 !important; }}
+    </style>
+    """, unsafe_allow_html=True)
+
+    col_titulo, col_fechar = st.columns([10, 2])
+    with col_titulo:
+        st.markdown(f'<div class="card-title" style="font-size:1.3rem;">{titulo}</div>', unsafe_allow_html=True)
+    with col_fechar:
+        if st.button("✕  Fechar", key="fs_fechar", use_container_width=True):
+            del st.session_state["_grafico_fs"]
+            st.rerun()
+
+    st.markdown("<hr style='border-color:#484848;margin:0 0 12px 0;'>", unsafe_allow_html=True)
+
+    if grafico_id == "status":
+        fig = criar_grafico_status(status_df)
+        fig.update_layout(height=680, margin=dict(l=10, r=10, t=20, b=10), paper_bgcolor='#141414', plot_bgcolor='#141414')
+    elif grafico_id == "posicao":
+        fig = criar_grafico_posicao(posicao_df, fullscreen=True)
+    elif grafico_id == "tipo":
+        fig = criar_grafico_tipo(tipo_df)
+        fig.update_layout(height=680, margin=dict(l=10, r=10, t=20, b=10), paper_bgcolor='#141414', plot_bgcolor='#141414')
+    elif grafico_id == "uf":
+        fig = criar_grafico_uf_origem(uf_origem_df)
+        fig.update_layout(height=680, margin=dict(l=10, r=10, t=20, b=10), paper_bgcolor='#141414', plot_bgcolor='#141414')
+    else:
+        st.stop()
+
+    st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': True})
 
 def criar_tabela_detalhada(df_filtrado):
     with st.container(border=True):
@@ -1170,8 +1312,17 @@ def criar_tabela_detalhada(df_filtrado):
 # =====================================================
 # FUNÇÃO PRINCIPAL
 # =====================================================
+
 def main():
     load_custom_css()
+    # Fix tooltip color via JS (Streamlit gera classes dinâmicas)
+    st.markdown("""<script>
+    (function(){
+        var style = document.createElement('style');
+        style.textContent = '[class*="TooltipContent"],[class*="tooltip"]{background:#1a1a1a!important;color:#fff!important;border:1px solid #555!important;}[class*="TooltipContent"] *{color:#fff!important;}';
+        document.head.appendChild(style);
+    })();
+    </script>""", unsafe_allow_html=True)
     loading_placeholder = st.empty()
 
     df_base_filtrado, status_sel, tipo_sel, pos_sel, uf_sel = criar_sidebar(loading_placeholder)
@@ -1211,8 +1362,7 @@ def main():
     em_operacao, disponiveis, manutencao = criar_kpis(df_filtrado)
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # ── FIX: se havia um dialog aberto antes do rerun, reabri-lo ────────
-    # Verifica se algum KPI dialog deve ser reaberto (usuário clicou em ▶ ABRIR)
+    # ── Modo fullscreen KPI ──────────────────────────────────────────────
     kpis_config = [
         ("TOTAL DE VEÍCULOS",  CORES_KPI["TOTAL"]["border"]),
         ("EM OPERAÇÃO",        CORES_KPI["OPERACAO"]["border"]),
@@ -1223,11 +1373,10 @@ def main():
         key_sel    = f"_kpi_sel_{titulo_kpi}"
         key_aberto = f"_kpi_aberto_{titulo_kpi}"
         key_df     = f"_kpi_df_{titulo_kpi}"
-        # Reabre o dialog se: tem veículo selecionado (nível 2) OU voltou para nível 1
         if (st.session_state.get(key_sel) or st.session_state.get(key_aberto)) and key_df in st.session_state:
             mostrar_detalhes_kpi(titulo_kpi, cor_kpi, st.session_state[key_df])
-            break  # só um dialog por vez
-    # ────────────────────────────────────────────────────────────────────
+            st.stop()  # não renderiza o resto da página
+    # ─────────────────────────────────────────────────────────────────────
 
     status_counts = df_filtrado["STATUS"].value_counts()
     status_df = pd.DataFrame({
@@ -1243,6 +1392,15 @@ def main():
         uf_origem_df = df_filtrado["UF_ORIGEM"].value_counts().reset_index().rename(columns={"count": "QUANTIDADE"})
     else:
         uf_origem_df = pd.DataFrame()
+
+    # ── Modo tela cheia de gráfico ──────────────────────────────────────
+    if st.session_state.get("_grafico_fs"):
+        mostrar_grafico_fullscreen(
+            st.session_state["_grafico_fs"],
+            status_df, tipo_df, posicao_df, uf_origem_df
+        )
+        st.stop()
+    # ────────────────────────────────────────────────────────────────────
 
     col_graf1, col_graf2 = st.columns(2)
     with col_graf1:
