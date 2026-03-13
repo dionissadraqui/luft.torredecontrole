@@ -196,28 +196,28 @@ def load_custom_css():
         font-size: 0.72rem !important; font-weight: 700 !important; padding: 4px 10px !important;
         letter-spacing: 0.8px !important; width: 100% !important; transition: all 0.2s !important;
     }}
-    .kpi-btn-azul button:hover {{ background-color: {CORES_KPI["TOTAL"]["border"]} !important; color: white !important; box-shadow: 0 0 14px {CORES_KPI["TOTAL"]["shadow"]} !important; }}
+    .kpi-btn-azul button:hover {{ background-color: #cc0000 !important; color: white !important; border: 1px solid #ffffff !important; box-shadow: 0 0 12px #ffffff, 0 0 24px rgba(255,0,0,0.8) !important; }}
     .kpi-btn-laranja button {{
         background-color: transparent !important; color: {CORES_KPI["OPERACAO"]["text"]} !important;
         border: 1px solid {CORES_KPI["OPERACAO"]["border"]} !important; border-radius: 5px !important;
         font-size: 0.72rem !important; font-weight: 700 !important; padding: 4px 10px !important;
         letter-spacing: 0.8px !important; width: 100% !important; transition: all 0.2s !important;
     }}
-    .kpi-btn-laranja button:hover {{ background-color: {CORES_KPI["OPERACAO"]["border"]} !important; color: white !important; box-shadow: 0 0 14px {CORES_KPI["OPERACAO"]["shadow"]} !important; }}
+    .kpi-btn-laranja button:hover {{ background-color: #cc0000 !important; color: white !important; border: 1px solid #ffffff !important; box-shadow: 0 0 12px #ffffff, 0 0 24px rgba(255,0,0,0.8) !important; }}
     .kpi-btn-verde button {{
         background-color: transparent !important; color: {CORES_KPI["DISPONIVEIS"]["text"]} !important;
         border: 1px solid {CORES_KPI["DISPONIVEIS"]["border"]} !important; border-radius: 5px !important;
         font-size: 0.72rem !important; font-weight: 700 !important; padding: 4px 10px !important;
         letter-spacing: 0.8px !important; width: 100% !important; transition: all 0.2s !important;
     }}
-    .kpi-btn-verde button:hover {{ background-color: {CORES_KPI["DISPONIVEIS"]["border"]} !important; color: white !important; box-shadow: 0 0 14px {CORES_KPI["DISPONIVEIS"]["shadow"]} !important; }}
+    .kpi-btn-verde button:hover {{ background-color: #cc0000 !important; color: white !important; border: 1px solid #ffffff !important; box-shadow: 0 0 12px #ffffff, 0 0 24px rgba(255,0,0,0.8) !important; }}
     .kpi-btn-vermelho button {{
         background-color: transparent !important; color: {CORES_KPI["MANUTENCAO"]["text"]} !important;
         border: 1px solid {CORES_KPI["MANUTENCAO"]["border"]} !important; border-radius: 5px !important;
         font-size: 0.72rem !important; font-weight: 700 !important; padding: 4px 10px !important;
         letter-spacing: 0.8px !important; width: 100% !important; transition: all 0.2s !important;
     }}
-    .kpi-btn-vermelho button:hover {{ background-color: {CORES_KPI["MANUTENCAO"]["border"]} !important; color: white !important; box-shadow: 0 0 14px {CORES_KPI["MANUTENCAO"]["shadow"]} !important; }}
+    .kpi-btn-vermelho button:hover {{ background-color: #cc0000 !important; color: white !important; border: 1px solid #ffffff !important; box-shadow: 0 0 12px #ffffff, 0 0 24px rgba(255,0,0,0.8) !important; }}
     /* ====== DIALOG — estilos base ====== */
     div[role="dialog"] > div {{
         max-width: 92vw !important;
@@ -346,14 +346,14 @@ def load_custom_css():
         font-size: 0.65rem !important; font-weight: 700 !important; padding: 2px 8px !important;
         letter-spacing: 0.5px !important; width: 100% !important; transition: all 0.2s !important; margin-top: 0 !important;
     }}
-    .mini-card-expand-btn button:hover {{ background-color: rgba(255,255,255,0.15) !important; border-color: rgba(255,255,255,0.5) !important; }}
+    .mini-card-expand-btn button:hover {{ background-color: #cc0000 !important; border: 1px solid #ffffff !important; box-shadow: 0 0 12px #ffffff, 0 0 24px rgba(255,0,0,0.8) !important; color: white !important; }}
     .btn-voltar button {{
         background-color: #2a2a2a !important; color: #ffffff !important;
         border: 1px solid #555 !important; border-radius: 8px !important;
         font-size: 0.8rem !important; font-weight: 700 !important;
         letter-spacing: 0.5px !important; transition: all 0.2s !important;
     }}
-    .btn-voltar button:hover {{ background-color: #3a3a3a !important; border-color: #888 !important; }}
+    .btn-voltar button:hover {{ background-color: #cc0000 !important; border: 1px solid #ffffff !important; box-shadow: 0 0 12px #ffffff, 0 0 24px rgba(255,0,0,0.8) !important; color: white !important; }}
     .card-veiculo {{ border-radius: 12px; padding: 18px 16px; margin-bottom: 14px; box-sizing: border-box; width: 100%; }}
     .card-header {{ display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }}
     .card-placa-row {{ display: flex; flex-wrap: wrap; align-items: center; gap: 10px; min-width: 0; }}
@@ -436,7 +436,7 @@ def load_custom_css():
     section[data-testid="stSidebar"] [data-testid="stFileUploadDropzone"] {{ background-color: #ffffff !important; }}
     section[data-testid="stSidebar"] [data-testid="stFileUploadDropzone"] * {{ color: #000000 !important; }}
     .stButton button {{ background-color: {CORES_INTERFACE["botao_primary"]} !important; color: white !important; border: none !important; border-radius: 6px !important; font-weight: 600 !important; padding: 10px 20px !important; transition: all 0.3s !important; }}
-    .stButton button:hover {{ background-color: {CORES_INTERFACE["botao_hover"]} !important; box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4) !important; }}
+    .stButton button:hover {{ background-color: #cc0000 !important; border: 1px solid #ffffff !important; box-shadow: 0 0 12px #ffffff, 0 0 24px rgba(255,0,0,0.8) !important; color: white !important; }}
     div[data-testid="stMetricDelta"] {{ display: none !important; }}
     .stMarkdown, .stMarkdown p, .stMarkdown span, .stMarkdown div {{ color: {CORES_INTERFACE["texto_principal"]} !important; }}
     h1, h2, h3, h4, h5, h6 {{ color: {CORES_INTERFACE["texto_principal"]} !important; }}
@@ -463,10 +463,10 @@ def load_custom_css():
         box-shadow: none !important;
     }}
     .btn-fullscreen button:hover {{
-        color: #ffffff !important;
-        border-color: rgba(255,255,255,0.55) !important;
-        background-color: rgba(255,255,255,0.08) !important;
-        box-shadow: none !important;
+        background-color: #cc0000 !important;
+        border: 1px solid #ffffff !important;
+        box-shadow: 0 0 12px #ffffff, 0 0 24px rgba(255,0,0,0.8) !important;
+        color: white !important;
     }}
     </style>
     """, unsafe_allow_html=True)
@@ -884,7 +884,14 @@ def mostrar_detalhes_kpi(titulo, cor_hex, df_kpi):
         </style>
         """, unsafe_allow_html=True)
 
-        col_info_only, col_btn_v = st.columns([5, 1])
+        col_inicio_v, col_info_only, col_btn_v = st.columns([1, 4, 1])
+        with col_inicio_v:
+            if st.button("🏠 INÍCIO", key=f"btn_inicio_v_{titulo}", use_container_width=True):
+                for k in [k for k in st.session_state if k.startswith("_kpi_aberto_") or k.startswith("_kpi_sel_")]:
+                    st.session_state[k] = False if k.startswith("_kpi_aberto_") else None
+                if "_grafico_fs" in st.session_state:
+                    del st.session_state["_grafico_fs"]
+                st.rerun()
         with col_btn_v:
             if st.button("← VOLTAR", key=f"btn_voltar_{titulo}", use_container_width=True, type="secondary"):
                 st.session_state[key_sel]    = None
@@ -939,7 +946,14 @@ def mostrar_detalhes_kpi(titulo, cor_hex, df_kpi):
     </style>
     """, unsafe_allow_html=True)
 
-    col_espacador, col_fechar = st.columns([6, 1])
+    col_inicio, col_espacador, col_fechar = st.columns([1, 5, 1])
+    with col_inicio:
+        if st.button("🏠 INÍCIO", key=f"btn_inicio_{titulo}", use_container_width=True):
+            for k in [k for k in st.session_state if k.startswith("_kpi_aberto_") or k.startswith("_kpi_sel_")]:
+                st.session_state[k] = False if k.startswith("_kpi_aberto_") else None
+            if "_grafico_fs" in st.session_state:
+                del st.session_state["_grafico_fs"]
+            st.rerun()
     with col_fechar:
         if st.button("✕  FECHAR", key=f"btn_fechar_{titulo}", use_container_width=True, type="secondary"):
             st.session_state[key_aberto] = False
