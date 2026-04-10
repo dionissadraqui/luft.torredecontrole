@@ -438,7 +438,7 @@ def load_custom_css():
     section[data-testid="stSidebar"] [data-testid="stFileUploadDropzone"],
     section[data-testid="stSidebar"] [class*="uploadDropzone"],
     section[data-testid="stSidebar"] [class*="fileUploader"],
-    section[data-testid="stSidebar"] [class*="FileUploader"] {{ background-color: #ffffff !important; border: 3px solid #ffb300 !important; border-radius: 12px !important; box-shadow: none !important; outline: none !important; }}
+    section[data-testid="stSidebar"] [class*="FileUploader"] {{ background-color: #ffffff !important; border: 3px solid #ffb300 !important; border-radius: 12px !important; box-shadow: none !important; outline: none !important; width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; overflow: hidden !important; }}
     section[data-testid="stSidebar"] [data-testid="stFileUploadDropzone"] > *,
     section[data-testid="stSidebar"] [class*="uploadDropzone"] > *,
     section[data-testid="stSidebar"] [class*="fileUploader"] > *,
@@ -447,6 +447,18 @@ def load_custom_css():
     section[data-testid="stSidebar"] [class*="uploadDropzone"] *,
     section[data-testid="stSidebar"] [class*="fileUploader"] *,
     section[data-testid="stSidebar"] [class*="FileUploader"] * {{ color: #000000 !important; }}
+    section[data-testid="stSidebar"] [data-testid="stFileUploadDropzone"] *,
+    section[data-testid="stSidebar"] [class*="uploadDropzone"] *,
+    section[data-testid="stSidebar"] [class*="fileUploader"] *,
+    section[data-testid="stSidebar"] [class*="FileUploader"] * {{ color: #000000 !important; }}
+    section[data-testid="stSidebar"] [data-testid="stFileUploadDropzone"] button,
+    section[data-testid="stSidebar"] [class*="uploadDropzone"] button,
+    section[data-testid="stSidebar"] [class*="fileUploader"] button,
+    section[data-testid="stSidebar"] [class*="FileUploader"] button {{ background-color: #ffb300 !important; color: #000000 !important; border: none !important; border-radius: 6px !important; font-weight: 700 !important; transition: all 0.2s !important; width: 100% !important; box-sizing: border-box !important; }}
+    section[data-testid="stSidebar"] [data-testid="stFileUploadDropzone"] button:hover,
+    section[data-testid="stSidebar"] [class*="uploadDropzone"] button:hover,
+    section[data-testid="stSidebar"] [class*="fileUploader"] button:hover,
+    section[data-testid="stSidebar"] [class*="FileUploader"] button:hover {{ background-color: #2e7d32 !important; color: #ffffff !important; box-shadow: 0 0 14px rgba(46, 125, 50, 0.8), 0 0 28px rgba(76, 175, 80, 0.5) !important; }}
     .stButton button {{ background-color: {CORES_INTERFACE["botao_primary"]} !important; color: white !important; border: none !important; border-radius: 6px !important; font-weight: 600 !important; padding: 10px 20px !important; transition: all 0.3s !important; }}
     .stButton button:hover {{ background-color: #cc0000 !important; border: 1px solid #ffffff !important; box-shadow: 0 0 12px #ffffff, 0 0 24px rgba(255,0,0,0.8) !important; color: white !important; }}
     div[data-testid="stMetricDelta"] {{ display: none !important; }}
