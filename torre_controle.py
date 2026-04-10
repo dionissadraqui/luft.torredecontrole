@@ -1364,19 +1364,6 @@ def criar_tabela_detalhada(df_filtrado):
 def main():
     load_custom_css()
     
-    st.markdown("""<script>
-    function traduzirUploader() {
-        document.querySelectorAll('[data-testid="stFileUploadDropzone"] button, [class*="fileUploader"] button, [class*="uploadDropzone"] button').forEach(btn => {
-            if (btn.innerText.includes('Browse')) btn.innerText = 'Procurar arquivo';
-        });
-        document.querySelectorAll('[data-testid="stFileUploadDropzone"] span, [class*="uploadDropzone"] span, [class*="fileUploader"] span').forEach(el => {
-            if (el.innerText.includes('Drag and drop')) el.innerText = 'Arraste e solte aqui';
-            if (el.innerText.includes('Limit')) el.innerText = el.innerText.replace('Limit', 'Limite').replace('per file', 'por arquivo');
-        });
-    }
-    setInterval(traduzirUploader, 300);
-    </script>""", unsafe_allow_html=True)
-    
     # Fix tooltip color via JS (Streamlit gera classes dinâmicas)
     st.markdown("""<script>
     (function(){
