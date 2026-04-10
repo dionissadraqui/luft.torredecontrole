@@ -432,24 +432,9 @@ def load_custom_css():
     section[data-testid="stSidebar"] .stMarkdown, section[data-testid="stSidebar"] label, section[data-testid="stSidebar"] p, section[data-testid="stSidebar"] span, section[data-testid="stSidebar"] div {{ color: {CORES_INTERFACE["texto_principal"]} !important; }}
     section[data-testid="stSidebar"] label[data-testid="stWidgetLabel"] {{ color: {CORES_INTERFACE["texto_principal"]} !important; font-weight: 600 !important; }}
     section[data-testid="stSidebar"] .stMarkdown small {{ color: #cccccc !important; }}
-    section[data-testid="stSidebar"] [data-testid="stFileUploader"] p,
-    section[data-testid="stSidebar"] [data-testid="stFileUploader"] span,
-    section[data-testid="stSidebar"] [data-testid="stFileUploader"] small {{ color: #000000 !important; }}
-    section[data-testid="stSidebar"] [data-testid="stFileUploadDropzone"],
-    section[data-testid="stSidebar"] [class*="uploadDropzone"],
-    section[data-testid="stSidebar"] [class*="fileUploader"],
-    section[data-testid="stSidebar"] [class*="FileUploader"] {{ background-color: #ffffff !important; border: 3px solid #ffb300 !important; border-radius: 12px !important; box-shadow: none !important; outline: none !important; }}
-    section[data-testid="stSidebar"] [data-testid="stFileUploadDropzone"] > *,
-    section[data-testid="stSidebar"] [class*="uploadDropzone"] > *,
-    section[data-testid="stSidebar"] [class*="fileUploader"] > *,
-    section[data-testid="stSidebar"] [class*="FileUploader"] > * {{ border: none !important; box-shadow: none !important; }}
-    section[data-testid="stSidebar"] [data-testid="stFileUploadDropzone"] *,
-    section[data-testid="stSidebar"] [class*="uploadDropzone"] *,
-    section[data-testid="stSidebar"] [class*="fileUploader"] *,
-    section[data-testid="stSidebar"] [class*="FileUploader"] * {{ color: #000000 !important; }}
-    section[data-testid="stSidebar"] [data-testid="stFileUploaderFile"],
-    section[data-testid="stSidebar"] [class*="uploadedFile"],
-    section[data-testid="stSidebar"] [class*="UploadedFile"] {{ border: 3px solid #ffffff !important; border-radius: 10px !important; box-shadow: none !important; }}
+    section[data-testid="stSidebar"] [data-testid="stFileUploader"] p, section[data-testid="stSidebar"] [data-testid="stFileUploader"] span, section[data-testid="stSidebar"] [data-testid="stFileUploader"] small {{ color: #000000 !important; }}
+    section[data-testid="stSidebar"] [data-testid="stFileUploadDropzone"] {{ background-color: #ffffff !important; }}
+    section[data-testid="stSidebar"] [data-testid="stFileUploadDropzone"] * {{ color: #000000 !important; }}
     .stButton button {{ background-color: {CORES_INTERFACE["botao_primary"]} !important; color: white !important; border: none !important; border-radius: 6px !important; font-weight: 600 !important; padding: 10px 20px !important; transition: all 0.3s !important; }}
     .stButton button:hover {{ background-color: #cc0000 !important; border: 1px solid #ffffff !important; box-shadow: 0 0 12px #ffffff, 0 0 24px rgba(255,0,0,0.8) !important; color: white !important; }}
     div[data-testid="stMetricDelta"] {{ display: none !important; }}
