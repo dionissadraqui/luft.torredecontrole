@@ -1184,8 +1184,7 @@ def criar_sidebar(main_loading_placeholder):
         st.subheader("📁 CARREGAR ARQUIVO")
 
         uploaded_file = st.file_uploader(
-            "Faça upload do arquivo Excel", type=['xlsx', 'xls'],
-            help="Selecione o arquivo da planilha de frota",
+            " ", type=['xlsx', 'xls'],
             label_visibility="collapsed"
         )
 
